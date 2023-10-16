@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-enum Weather {
+enum WeatherState {
     case cloudyNight
     case heavyRain
     case rain
@@ -34,7 +34,7 @@ class TimeWeatherView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(time: String = "", state: Weather, temp: String = "˚") {
+    init(time: String = "", state: WeatherState, temp: String = "˚") {
         super.init(frame: CGRect())
         setViewState(state: state)
         timeLabel.text = time
@@ -88,7 +88,7 @@ class TimeWeatherView: UIView {
         }
     }
     
-    func setViewState(state: Weather) {
+    func setViewState(state: WeatherState) {
         switch state {
         case .cloudyNight:
             weatherImageView.image = UIImage(named: "icCloudyNight")
