@@ -15,6 +15,10 @@ final class HomeViewController: UIViewController {
     let moreButton = UIButton()
     let weatherTitleLabel = UILabel()
     let searchBar = UISearchBar()
+    
+    let contentView = UIView()
+    
+    let weatherButton = WeatherListButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +59,10 @@ final class HomeViewController: UIViewController {
     private func setLayout() {
         self.view.addSubViews(moreButton,
                               weatherTitleLabel,
-                              searchBar)
+                              searchBar,
+                              contentView)
+        
+        contentView.addSubViews(weatherButton)
         
         moreButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
@@ -76,6 +83,16 @@ final class HomeViewController: UIViewController {
         searchBar.searchTextField.snp.makeConstraints {
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(40)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom).offset(24)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        weatherButton.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 }
