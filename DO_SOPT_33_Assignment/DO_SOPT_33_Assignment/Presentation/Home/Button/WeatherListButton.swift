@@ -36,6 +36,7 @@ class WeatherListButton: UIButton {
     
     func setStyle() {
         self.setBackgroundImage(UIImage(named: "imgList"), for: .normal)
+        self.imageView?.contentMode = .scaleAspectFill
         
         myPlaceLabel.do {
             $0.text = "나의 위치"
@@ -84,6 +85,7 @@ class WeatherListButton: UIButton {
         
         self.snp.makeConstraints {
             $0.height.equalTo(117)
+            $0.width.equalTo(UIScreen.main.bounds.width - 40)
         }
         
         myPlaceLabel.snp.makeConstraints {
