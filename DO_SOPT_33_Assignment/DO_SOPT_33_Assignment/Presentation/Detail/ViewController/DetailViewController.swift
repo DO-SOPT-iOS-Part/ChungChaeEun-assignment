@@ -34,11 +34,10 @@ final class DetailViewController: UIViewController {
     let afterEightHourWeatherView = TimeWeatherView(time: "17시", state: .rainyDay, temp: "21")
     let afterNineHourWeatherView = TimeWeatherView(time: "18시", state: .cloudyNight, temp: "19")
     
-    let tabBarView = UIView()
+    let tabBarView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 82))
     let mapButton = UIButton()
-    let listButton = UIButton()
+    lazy var listButton = UIButton()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -87,7 +86,7 @@ final class DetailViewController: UIViewController {
             $0.layer.cornerRadius = 15
             $0.clipsToBounds = true
             $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = .init(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 0.25)
+            $0.layer.borderColor = .init(red: 1, green: 1, blue: 1, alpha: 0.25)
         }
         
         descriptionLabel.do {
@@ -105,6 +104,20 @@ final class DetailViewController: UIViewController {
         weatherScrollView.do {
             $0.showsHorizontalScrollIndicator = false
         }
+        
+        tabBarView.do {
+            $0.backgroundColor = .clear
+            $0.layer.addBorder([.top], color: UIColor(white: 1, alpha: 0.3), width: 0.4)
+        }
+        
+        mapButton.do {
+            $0.setImage(UIImage(named: "icMap"), for: .normal)
+        }
+        
+        listButton.do {
+            $0.setImage(UIImage(named: "icList"), for: .normal)
+            $0.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
+        }
     }
     
     private func setLayout() {
@@ -113,11 +126,15 @@ final class DetailViewController: UIViewController {
                               tempLabel,
                               weatherLabel,
                               maxMinTempLabel,
-                              cardView)
+                              cardView,
+                              tabBarView)
         
         cardView.addSubViews(descriptionLabel,
                              separateLineView,
                              weatherScrollView)
+        
+        tabBarView.addSubViews(mapButton,
+                               listButton)
         
         weatherScrollView.addSubViews(nowWeatherView,
                                       afterOneHourWeatherView,
@@ -229,5 +246,24 @@ final class DetailViewController: UIViewController {
             $0.leading.equalTo(afterEightHourWeatherView.snp.trailing).offset(22)
             $0.trailing.equalToSuperview()
         }
+        
+        tabBarView.snp.makeConstraints {
+            $0.width.bottom.equalToSuperview()
+            $0.height.equalTo(82)
+        }
+        
+        mapButton.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(4)
+            $0.leading.equalToSuperview().inset(10)
+        }
+        
+        listButton.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(4)
+            $0.trailing.equalToSuperview().inset(10)
+        }
+    }
+    
+    @objc func listButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
