@@ -16,9 +16,13 @@ final class HomeViewController: UIViewController {
     let weatherTitleLabel = UILabel()
     let searchBar = UISearchBar()
     
-    let contentView = UIView()
+    let contentView = UIScrollView()
     
     let weatherButton = WeatherListButton()
+    let secondWeatherButton = WeatherListButton()
+    let thirdWeatherButton = WeatherListButton()
+    let fourthWeatherButton = WeatherListButton()
+    let fifthWeatherButton = WeatherListButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +58,10 @@ final class HomeViewController: UIViewController {
             // 위아래로 생기는 선 삭제
             $0.barTintColor = .clear
         }
+        
+        contentView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
     }
     
     private func setLayout() {
@@ -62,7 +70,11 @@ final class HomeViewController: UIViewController {
                               searchBar,
                               contentView)
         
-        contentView.addSubViews(weatherButton)
+        contentView.addSubViews(weatherButton,
+                                secondWeatherButton,
+                                thirdWeatherButton,
+                                fourthWeatherButton,
+                                fifthWeatherButton)
         
         moreButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
@@ -92,7 +104,28 @@ final class HomeViewController: UIViewController {
         
         weatherButton.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.centerX.equalToSuperview()
+        }
+        
+        secondWeatherButton.snp.makeConstraints {
+            $0.top.equalTo(weatherButton.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+        }
+        
+        thirdWeatherButton.snp.makeConstraints {
+            $0.top.equalTo(secondWeatherButton.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+        }
+        
+        fourthWeatherButton.snp.makeConstraints {
+            $0.top.equalTo(thirdWeatherButton.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+        }
+        
+        fifthWeatherButton.snp.makeConstraints {
+            $0.top.equalTo(fourthWeatherButton.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(16)
         }
     }
 }
