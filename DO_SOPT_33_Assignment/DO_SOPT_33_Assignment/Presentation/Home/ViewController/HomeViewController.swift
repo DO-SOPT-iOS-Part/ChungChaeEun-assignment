@@ -28,61 +28,69 @@ final class HomeViewController: UIViewController {
                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
                                TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)]),
      Weather(local: "양천구",
-              weather: "비",
-              currentTemp: 19, maxTemp: 25, minTemp: 18,
-              description: "오전부터 계속해서 비가 내리는 상태가 예상되며, 돌풍의 풍속은 최대 4m/s 입니다.",
+             weather: "비",
+             currentTemp: 19, maxTemp: 25, minTemp: 18,
+             description: "오전부터 계속해서 비가 내리는 상태가 예상되며, 돌풍의 풍속은 최대 4m/s 입니다.",
              timeZoneWeather: [TimeZoneWeather(time: "Now", state: .heavyRain, temp: 19),
-                                TimeZoneWeather(time: "10시", state: .rain, temp: 18),
-                                TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                                TimeZoneWeather(time: "12시", state: .heavyRain, temp: 22),
-                                TimeZoneWeather(time: "13시", state: .rain, temp: 23),
-                                TimeZoneWeather(time: "14시", state: .rain, temp: 25),
-                                TimeZoneWeather(time: "15시", state: .rain, temp: 25),
-                                TimeZoneWeather(time: "16시", state: .rain, temp: 24),
-                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 24),
-                                TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 22)]),
+                               TimeZoneWeather(time: "10시", state: .rain, temp: 18),
+                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
+                               TimeZoneWeather(time: "12시", state: .heavyRain, temp: 22),
+                               TimeZoneWeather(time: "13시", state: .rain, temp: 23),
+                               TimeZoneWeather(time: "14시", state: .rain, temp: 25),
+                               TimeZoneWeather(time: "15시", state: .rain, temp: 25),
+                               TimeZoneWeather(time: "16시", state: .rain, temp: 24),
+                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 24),
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 22)]),
      Weather(local: "마포구",
-              weather: "폭우",
-              currentTemp: 13, maxTemp: 29, minTemp: 13,
-              description: "오후 12시까지 계속해서 폭우가 내릴 예정이며, 최저 기온은 13도입니다.",
-              timeZoneWeather: [TimeZoneWeather(time: "Now", state: .heavyRain, temp: 13),
-                                TimeZoneWeather(time: "10시", state: .thunder, temp: 14),
-                                TimeZoneWeather(time: "11시", state: .heavyRain, temp: 14),
-                                TimeZoneWeather(time: "12시", state: .rain, temp: 18),
-                                TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
-                                TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
-                                TimeZoneWeather(time: "15시", state: .rainyDay, temp: 20),
-                                TimeZoneWeather(time: "16시", state: .rainyDay, temp: 19),
-                                TimeZoneWeather(time: "17시", state: .cloudyNight, temp: 19),
-                                TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)]),
+             weather: "폭우",
+             currentTemp: 13, maxTemp: 29, minTemp: 13,
+             description: "오후 12시까지 계속해서 폭우가 내릴 예정이며, 최저 기온은 13도입니다.",
+             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .heavyRain, temp: 13),
+                               TimeZoneWeather(time: "10시", state: .thunder, temp: 14),
+                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 14),
+                               TimeZoneWeather(time: "12시", state: .rain, temp: 18),
+                               TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
+                               TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
+                               TimeZoneWeather(time: "15시", state: .rainyDay, temp: 20),
+                               TimeZoneWeather(time: "16시", state: .rainyDay, temp: 19),
+                               TimeZoneWeather(time: "17시", state: .cloudyNight, temp: 19),
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)]),
      Weather(local: "영등포구",
-              weather: "비",
-              currentTemp: 21, maxTemp: 22, minTemp: 15,
-              description: "하루종일 비가 내릴 예정이며, 돌풍의 풍속은 최대 4m/s 입니다.",
-              timeZoneWeather: [TimeZoneWeather(time: "Now", state: .rain, temp: 21),
-                                TimeZoneWeather(time: "10시", state: .rain, temp: 21),
-                                TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                                TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
-                                TimeZoneWeather(time: "13시", state: .rain, temp: 19),
-                                TimeZoneWeather(time: "14시", state: .rain, temp: 20),
-                                TimeZoneWeather(time: "15시", state: .rain, temp: 22),
-                                TimeZoneWeather(time: "16시", state: .rain, temp: 21),
-                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                                TimeZoneWeather(time: "18시", state: .rainyDay, temp: 19)]),
+             weather: "비",
+             currentTemp: 21, maxTemp: 22, minTemp: 15,
+             description: "하루종일 비가 내릴 예정이며, 돌풍의 풍속은 최대 4m/s 입니다.",
+             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .rain, temp: 21),
+                               TimeZoneWeather(time: "10시", state: .rain, temp: 21),
+                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
+                               TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
+                               TimeZoneWeather(time: "13시", state: .rain, temp: 19),
+                               TimeZoneWeather(time: "14시", state: .rain, temp: 20),
+                               TimeZoneWeather(time: "15시", state: .rain, temp: 22),
+                               TimeZoneWeather(time: "16시", state: .rain, temp: 21),
+                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
+                               TimeZoneWeather(time: "18시", state: .rainyDay, temp: 19)]),
      Weather(local: "구로구",
-              weather: "흐림",
-              currentTemp: 21, maxTemp: 20, minTemp: 15,
-              description: "8:00~9:00에 강우 상태가, 18:00에 한때 흐린 상태가 예상됩니다.",
-              timeZoneWeather: [TimeZoneWeather(time: "Now", state: .cloudyNight, temp: 21),
-                                TimeZoneWeather(time: "10시", state: .rain, temp: 21),
-                                TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                                TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
-                                TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
-                                TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
-                                TimeZoneWeather(time: "15시", state: .rain, temp: 20),
-                                TimeZoneWeather(time: "16시", state: .rain, temp: 20),
-                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                                TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)])]
+             weather: "흐림",
+             currentTemp: 21, maxTemp: 20, minTemp: 15,
+             description: "8:00~9:00에 강우 상태가, 18:00에 한때 흐린 상태가 예상됩니다.",
+             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .cloudyNight, temp: 21),
+                               TimeZoneWeather(time: "10시", state: .rain, temp: 21),
+                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
+                               TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
+                               TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
+                               TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
+                               TimeZoneWeather(time: "15시", state: .rain, temp: 20),
+                               TimeZoneWeather(time: "16시", state: .rain, temp: 20),
+                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)])]
+    
+    let localArray = [HomeViewController.weatherDummy[0].local,
+                      HomeViewController.weatherDummy[1].local,
+                      HomeViewController.weatherDummy[2].local,
+                      HomeViewController.weatherDummy[3].local,
+                      HomeViewController.weatherDummy[4].local]
+    
+    var resultArray: [Weather] = []
     
     let moreButton = UIButton()
     let weatherTitleLabel = UILabel()
@@ -99,7 +107,7 @@ final class HomeViewController: UIViewController {
     let fourthWeatherButton = WeatherListButton(local: HomeViewController.weatherDummy[3].local, weather: HomeViewController.weatherDummy[3].weather, currentTemp: HomeViewController.weatherDummy[3].currentTemp, maxTemp: HomeViewController.weatherDummy[3].maxTemp, minTemp: HomeViewController.weatherDummy[3].minTemp, indexNumber: 3)
     
     let fifthWeatherButton = WeatherListButton(local: HomeViewController.weatherDummy[4].local, weather: HomeViewController.weatherDummy[4].weather, currentTemp: HomeViewController.weatherDummy[4].currentTemp, maxTemp: HomeViewController.weatherDummy[4].maxTemp, minTemp: HomeViewController.weatherDummy[4].minTemp, indexNumber: 4)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -134,6 +142,8 @@ final class HomeViewController: UIViewController {
             
             // 위아래로 생기는 선 삭제
             $0.barTintColor = .clear
+            
+            $0.delegate = self
         }
         
         contentView.do {
@@ -215,5 +225,21 @@ final class HomeViewController: UIViewController {
         detailViewController.indexNumber = sender.indexNumber
         print(sender.indexNumber)
         self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+extension HomeViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let text = searchBar.text else { return }
+        
+        self.resultArray = []
+        
+        HomeViewController.weatherDummy.forEach {
+            if $0.local.contains(text) {
+                resultArray.append($0)
+            }
+        }
+        print(resultArray)
     }
 }

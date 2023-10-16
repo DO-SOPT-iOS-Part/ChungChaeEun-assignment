@@ -62,7 +62,7 @@ final class DetailViewController: UIViewController {
         setStyle()
         setLayout()
     }
-
+    
     private func setStyle() {
         
         self.navigationController?.navigationBar.isHidden = true
@@ -167,7 +167,7 @@ final class DetailViewController: UIViewController {
         
         tabBarStackView.addArrangedSubview(compassButton)
         tabBarStackView.addArrangedSubview(dotButton)
-
+        
         
         weatherScrollView.addSubViews(nowWeatherView,
                                       afterOneHourWeatherView,
