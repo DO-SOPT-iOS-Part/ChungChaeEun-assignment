@@ -37,6 +37,9 @@ final class DetailViewController: UIViewController {
     let tabBarView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 82))
     let mapButton = UIButton()
     lazy var listButton = UIButton()
+    let tabBarStackView = UIStackView()
+    let compassButton = UIButton()
+    let dotButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,6 +121,19 @@ final class DetailViewController: UIViewController {
             $0.setImage(UIImage(named: "icList"), for: .normal)
             $0.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
         }
+        
+        tabBarStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 4
+        }
+        
+        compassButton.do {
+            $0.setImage(UIImage(named: "icCompass"), for: .normal)
+        }
+        
+        dotButton.do {
+            $0.setImage(UIImage(named: "icDot"), for: .normal)
+        }
     }
     
     private func setLayout() {
@@ -134,7 +150,12 @@ final class DetailViewController: UIViewController {
                              weatherScrollView)
         
         tabBarView.addSubViews(mapButton,
-                               listButton)
+                               listButton,
+                               tabBarStackView)
+        
+        tabBarStackView.addArrangedSubview(compassButton)
+        tabBarStackView.addArrangedSubview(dotButton)
+
         
         weatherScrollView.addSubViews(nowWeatherView,
                                       afterOneHourWeatherView,
@@ -260,6 +281,11 @@ final class DetailViewController: UIViewController {
         listButton.snp.makeConstraints {
             $0.top.equalToSuperview().inset(4)
             $0.trailing.equalToSuperview().inset(10)
+        }
+        
+        tabBarStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(14)
+            $0.centerX.equalToSuperview()
         }
     }
     
