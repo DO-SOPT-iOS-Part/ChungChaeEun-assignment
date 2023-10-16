@@ -34,11 +34,11 @@ class TimeWeatherView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(time: String = "", state: WeatherState, temp: String = "˚") {
+    init(time: String = "", state: WeatherState, temp: Int) {
         super.init(frame: CGRect())
         setViewState(state: state)
         timeLabel.text = time
-        tempLabel.text = temp + "˚"
+        tempLabel.text = String(temp) + "˚"
         setUI()
     }
     

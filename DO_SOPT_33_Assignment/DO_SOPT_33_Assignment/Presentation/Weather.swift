@@ -22,3 +22,4 @@ struct TimeZoneWeather {
     let state: WeatherState
     let temp: Int
 }
+

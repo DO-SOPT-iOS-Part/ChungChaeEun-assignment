@@ -12,6 +12,8 @@ import Then
 
 class WeatherListButton: UIButton {
     
+    var indexNumber = 0
+    
     let myPlaceLabel = UILabel()
     let localLabel = UILabel()
     let weatherLabel = UILabel()
@@ -26,6 +28,17 @@ class WeatherListButton: UIButton {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        setUI()
+    }
+    
+    init(local: String = "", weather: String, currentTemp: Int, maxTemp: Int, minTemp: Int, indexNumber: Int) {
+        super.init(frame: CGRect())
+        localLabel.text = local
+        weatherLabel.text = weather
+        tempLabel.text = String(currentTemp) + "˚"
+        maxTempLabel.text = "최고:" + String(maxTemp) + "˚"
+        minTempLabel.text = "최저:" + String(minTemp) + "˚"
+        self.indexNumber = indexNumber
         setUI()
     }
     
@@ -45,31 +58,26 @@ class WeatherListButton: UIButton {
         }
         
         localLabel.do {
-            $0.text = "강서구"
             $0.font = UIFont(name: "SFProDisplay-Medium", size: 17)
             $0.textColor = .white
         }
         
         weatherLabel.do {
-            $0.text = "흐림"
             $0.font = UIFont(name: "SFProDisplay-Medium", size: 16)
             $0.textColor = .white
         }
         
         tempLabel.do {
-            $0.text = "21°"
             $0.font = UIFont(name: "SFProDisplay-Light", size: 52)
             $0.textColor = .white
         }
         
         maxTempLabel.do {
-            $0.text = "최고:29°"
             $0.font = UIFont(name: "SFProDisplay-Medium", size: 15)
             $0.textColor = .white
         }
         
         minTempLabel.do {
-            $0.text = "최저:15°"
             $0.font = UIFont(name: "SFProDisplay-Medium", size: 15)
             $0.textColor = .white
         }
