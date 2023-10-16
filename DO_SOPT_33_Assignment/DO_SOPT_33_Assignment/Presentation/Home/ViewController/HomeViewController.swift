@@ -18,7 +18,7 @@ final class HomeViewController: UIViewController {
     
     let contentView = UIScrollView()
     
-    let weatherButton = WeatherListButton()
+    lazy var weatherButton = WeatherListButton()
     let secondWeatherButton = WeatherListButton()
     let thirdWeatherButton = WeatherListButton()
     let fourthWeatherButton = WeatherListButton()
@@ -35,6 +35,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setStyle() {
+        self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .black
         
         moreButton.do {
@@ -61,6 +62,10 @@ final class HomeViewController: UIViewController {
         
         contentView.do {
             $0.showsVerticalScrollIndicator = false
+        }
+        
+        weatherButton.do {
+            $0.addTarget(self, action: #selector(weatherButtonTapped), for: .touchUpInside)
         }
     }
     
@@ -127,5 +132,10 @@ final class HomeViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(16)
         }
+    }
+    
+    @objc func weatherButtonTapped() {
+        let detailViewController = DetailViewController()
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
