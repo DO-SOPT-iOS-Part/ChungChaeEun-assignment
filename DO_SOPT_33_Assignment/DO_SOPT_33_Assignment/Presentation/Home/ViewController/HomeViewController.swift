@@ -138,6 +138,7 @@ final class HomeViewController: UIViewController {
             $0.searchTextField.backgroundColor = UIColor(white: 1, alpha: 0.1)
             $0.tintColor = .white
             $0.searchTextField.tintColor = UIColor(white: 1, alpha: 0.5)
+            $0.searchTextField.textColor = .white
             $0.setImage(UIImage(named: "icSearch"), for: .search, state: .normal)
             
             // 위아래로 생기는 선 삭제
@@ -241,5 +242,11 @@ extension HomeViewController: UISearchBarDelegate {
             }
         }
         print(resultArray)
+    }
+}
+
+extension HomeViewController {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+          self.view.endEditing(true)
     }
 }
