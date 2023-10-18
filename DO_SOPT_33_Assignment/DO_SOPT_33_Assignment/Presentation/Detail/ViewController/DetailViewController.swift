@@ -45,14 +45,6 @@ final class DetailViewController: UIViewController {
     
     lazy var afterNineHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].temp)
     
-    
-    let tabBarView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 82))
-    let mapButton = UIButton()
-    lazy var listButton = UIButton()
-    let tabBarStackView = UIStackView()
-    let compassButton = UIButton()
-    let dotButton = UIButton()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -119,33 +111,6 @@ final class DetailViewController: UIViewController {
         weatherScrollView.do {
             $0.showsHorizontalScrollIndicator = false
         }
-        
-        tabBarView.do {
-            $0.backgroundColor = .clear
-            $0.layer.addBorder([.top], color: UIColor(white: 1, alpha: 0.3), width: 0.4)
-        }
-        
-        mapButton.do {
-            $0.setImage(UIImage(named: "icMap"), for: .normal)
-        }
-        
-        listButton.do {
-            $0.setImage(UIImage(named: "icList"), for: .normal)
-            $0.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
-        }
-        
-        tabBarStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 4
-        }
-        
-        compassButton.do {
-            $0.setImage(UIImage(named: "icCompass"), for: .normal)
-        }
-        
-        dotButton.do {
-            $0.setImage(UIImage(named: "icDot"), for: .normal)
-        }
     }
     
     private func setLayout() {
@@ -154,20 +119,11 @@ final class DetailViewController: UIViewController {
                               tempLabel,
                               weatherLabel,
                               maxMinTempLabel,
-                              cardView,
-                              tabBarView)
+                              cardView)
         
         cardView.addSubViews(descriptionLabel,
                              separateLineView,
                              weatherScrollView)
-        
-        tabBarView.addSubViews(mapButton,
-                               listButton,
-                               tabBarStackView)
-        
-        tabBarStackView.addArrangedSubview(compassButton)
-        tabBarStackView.addArrangedSubview(dotButton)
-        
         
         weatherScrollView.addSubViews(nowWeatherView,
                                       afterOneHourWeatherView,
@@ -279,29 +235,5 @@ final class DetailViewController: UIViewController {
             $0.leading.equalTo(afterEightHourWeatherView.snp.trailing).offset(22)
             $0.trailing.equalToSuperview()
         }
-        
-        tabBarView.snp.makeConstraints {
-            $0.width.bottom.equalToSuperview()
-            $0.height.equalTo(82)
-        }
-        
-        mapButton.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(4)
-            $0.leading.equalToSuperview().inset(10)
-        }
-        
-        listButton.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(4)
-            $0.trailing.equalToSuperview().inset(10)
-        }
-        
-        tabBarStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(14)
-            $0.centerX.equalToSuperview()
-        }
-    }
-    
-    @objc func listButtonTapped() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
