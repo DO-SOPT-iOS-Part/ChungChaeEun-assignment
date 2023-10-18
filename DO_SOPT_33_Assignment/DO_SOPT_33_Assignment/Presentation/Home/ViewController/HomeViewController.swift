@@ -222,10 +222,20 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func weatherButtonTapped(sender: WeatherListButton) {
-        let detailViewController = DetailViewController()
-        detailViewController.indexNumber = sender.indexNumber
+        let detailPageViewController = DetailPageViewController()
+        
+        for index in 0..<5 {
+            let detailViewController = DetailViewController()
+            detailViewController.indexNumber = index
+            detailPageViewController.detailViewControllers.append(detailViewController)
+        }
+        
+        var firstViewController = detailPageViewController.detailViewControllers[sender.indexNumber]
+        detailPageViewController.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+
+        detailPageViewController.detailViewControllers[sender.indexNumber].indexNumber = sender.indexNumber
         print(sender.indexNumber)
-        self.navigationController?.pushViewController(detailViewController, animated: true)
+        self.navigationController?.pushViewController(detailPageViewController, animated: true)
     }
 }
 
