@@ -15,6 +15,7 @@ struct Weather {
     let minTemp: Int
     let description: String
     let timeZoneWeather: [TimeZoneWeather]
+    let indexNumber: Int
 }
 
 struct TimeZoneWeather {

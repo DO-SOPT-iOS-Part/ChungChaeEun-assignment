@@ -26,7 +26,7 @@ final class HomeViewController: UIViewController {
                                TimeZoneWeather(time: "15시", state: .rain, temp: 22),
                                TimeZoneWeather(time: "16시", state: .rain, temp: 21),
                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)]),
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)], indexNumber: 0),
      Weather(local: "양천구",
              weather: "비",
              currentTemp: 19, maxTemp: 25, minTemp: 18,
@@ -40,7 +40,7 @@ final class HomeViewController: UIViewController {
                                TimeZoneWeather(time: "15시", state: .rain, temp: 25),
                                TimeZoneWeather(time: "16시", state: .rain, temp: 24),
                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 24),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 22)]),
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 22)], indexNumber: 1),
      Weather(local: "마포구",
              weather: "폭우",
              currentTemp: 13, maxTemp: 29, minTemp: 13,
@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
                                TimeZoneWeather(time: "15시", state: .rainyDay, temp: 20),
                                TimeZoneWeather(time: "16시", state: .rainyDay, temp: 19),
                                TimeZoneWeather(time: "17시", state: .cloudyNight, temp: 19),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)]),
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)], indexNumber: 2),
      Weather(local: "영등포구",
              weather: "비",
              currentTemp: 21, maxTemp: 22, minTemp: 15,
@@ -68,7 +68,7 @@ final class HomeViewController: UIViewController {
                                TimeZoneWeather(time: "15시", state: .rain, temp: 22),
                                TimeZoneWeather(time: "16시", state: .rain, temp: 21),
                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                               TimeZoneWeather(time: "18시", state: .rainyDay, temp: 19)]),
+                               TimeZoneWeather(time: "18시", state: .rainyDay, temp: 19)], indexNumber: 3),
      Weather(local: "구로구",
              weather: "흐림",
              currentTemp: 21, maxTemp: 20, minTemp: 15,
@@ -82,21 +82,18 @@ final class HomeViewController: UIViewController {
                                TimeZoneWeather(time: "15시", state: .rain, temp: 20),
                                TimeZoneWeather(time: "16시", state: .rain, temp: 20),
                                TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)])]
+                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)], indexNumber: 4)]
+
     
-    let localArray = [HomeViewController.weatherDummy[0].local,
-                      HomeViewController.weatherDummy[1].local,
-                      HomeViewController.weatherDummy[2].local,
-                      HomeViewController.weatherDummy[3].local,
-                      HomeViewController.weatherDummy[4].local]
-    
-    var resultArray: [Weather] = []
+    var resultArray: [Int] = []
     
     let moreButton = UIButton()
     let weatherTitleLabel = UILabel()
     let searchBar = UISearchBar()
     
     let contentView = UIScrollView()
+    
+    let buttonStackView = UIStackView()
     
     lazy var weatherButton = WeatherListButton(local: HomeViewController.weatherDummy[0].local, weather: HomeViewController.weatherDummy[0].weather, currentTemp: HomeViewController.weatherDummy[0].currentTemp, maxTemp: HomeViewController.weatherDummy[0].maxTemp, minTemp: HomeViewController.weatherDummy[0].minTemp, indexNumber: 0)
     
@@ -119,6 +116,8 @@ final class HomeViewController: UIViewController {
     }
     
     private func setStyle() {
+        setButtonLayout()
+        
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .black
         
@@ -151,6 +150,11 @@ final class HomeViewController: UIViewController {
             $0.showsVerticalScrollIndicator = false
         }
         
+        buttonStackView.do {
+            $0.axis = .vertical
+            $0.spacing = 16
+        }
+        
         [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
             $0.addTarget(self, action: #selector(weatherButtonTapped), for: .touchUpInside)
         }
@@ -162,11 +166,11 @@ final class HomeViewController: UIViewController {
                               searchBar,
                               contentView)
         
-        contentView.addSubViews(weatherButton,
-                                secondWeatherButton,
-                                thirdWeatherButton,
-                                fourthWeatherButton,
-                                fifthWeatherButton)
+        contentView.addSubViews(buttonStackView)
+        
+        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
+            buttonStackView.addArrangedSubview($0)
+        }
         
         moreButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
@@ -194,30 +198,10 @@ final class HomeViewController: UIViewController {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
-        weatherButton.snp.makeConstraints {
+        buttonStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.centerX.equalToSuperview()
-        }
-        
-        secondWeatherButton.snp.makeConstraints {
-            $0.top.equalTo(weatherButton.snp.bottom).offset(16)
-            $0.centerX.equalToSuperview()
-        }
-        
-        thirdWeatherButton.snp.makeConstraints {
-            $0.top.equalTo(secondWeatherButton.snp.bottom).offset(16)
-            $0.centerX.equalToSuperview()
-        }
-        
-        fourthWeatherButton.snp.makeConstraints {
-            $0.top.equalTo(thirdWeatherButton.snp.bottom).offset(16)
-            $0.centerX.equalToSuperview()
-        }
-        
-        fifthWeatherButton.snp.makeConstraints {
-            $0.top.equalTo(fourthWeatherButton.snp.bottom).offset(16)
-            $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(16)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -232,7 +216,7 @@ final class HomeViewController: UIViewController {
         
         let firstViewController = detailPageViewController.detailViewControllers[sender.indexNumber]
         detailPageViewController.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
-
+        
         detailPageViewController.detailViewControllers[sender.indexNumber].indexNumber = sender.indexNumber
         print(sender.indexNumber)
         self.navigationController?.pushViewController(detailPageViewController, animated: true)
@@ -248,15 +232,52 @@ extension HomeViewController: UISearchBarDelegate {
         
         HomeViewController.weatherDummy.forEach {
             if $0.local.contains(text) {
-                resultArray.append($0)
+                resultArray.append($0.indexNumber)
             }
         }
         print(resultArray)
+        searchLayout()
+        
+        if text.isEmpty {
+            setButtonLayout()
+        }
     }
 }
 
 extension HomeViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-          self.view.endEditing(true)
+        self.view.endEditing(true)
+    }
+    
+    func setButtonLayout() {
+        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
+            $0.isHidden = false
+        }
+    }
+    
+    func searchLayout() {
+        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
+            $0.isHidden = true
+        }
+        
+        if resultArray.contains(0) {
+            weatherButton.isHidden = false
+        }
+        
+        if resultArray.contains(1) {
+            secondWeatherButton.isHidden = false
+        }
+        
+        if resultArray.contains(2) {
+            thirdWeatherButton.isHidden = false
+        }
+        
+        if resultArray.contains(3) {
+            fourthWeatherButton.isHidden = false
+        }
+        
+        if resultArray.contains(4) {
+            fifthWeatherButton.isHidden = false
+        }
     }
 }
