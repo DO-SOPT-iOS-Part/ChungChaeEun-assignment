@@ -13,11 +13,9 @@ import Then
 class DetailPageViewController: UIViewController {
     
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-    //    let firstDetailViewController = DetailViewController()
     lazy var detailViewControllers: [DetailViewController] = []
     
     let numberOfDetailViews = 5
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

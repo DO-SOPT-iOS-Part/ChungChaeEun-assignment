@@ -185,7 +185,7 @@ final class DetailViewController: UIViewController {
         }
         
         localLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(34)
+            $0.top.equalToSuperview().inset(78)
             $0.centerX.equalToSuperview()
         }
         

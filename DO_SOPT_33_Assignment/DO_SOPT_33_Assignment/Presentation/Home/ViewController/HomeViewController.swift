@@ -230,7 +230,7 @@ final class HomeViewController: UIViewController {
             detailPageViewController.detailViewControllers.append(detailViewController)
         }
         
-        var firstViewController = detailPageViewController.detailViewControllers[sender.indexNumber]
+        let firstViewController = detailPageViewController.detailViewControllers[sender.indexNumber]
         detailPageViewController.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
 
         detailPageViewController.detailViewControllers[sender.indexNumber].indexNumber = sender.indexNumber
