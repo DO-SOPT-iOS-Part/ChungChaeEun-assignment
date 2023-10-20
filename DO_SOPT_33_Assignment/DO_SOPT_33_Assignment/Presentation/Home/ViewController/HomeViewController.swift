@@ -15,6 +15,7 @@ final class HomeViewController: UIViewController {
     static let weatherDummy: [Weather] =
     [Weather(local: "강서구",
              weather: "흐림",
+             
              currentTemp: 21, maxTemp: 29, minTemp: 15,
              description: "8:00~9:00에 강우 상태가, 18:00에 한때 흐린 상태가 예상됩니다.",
              timeZoneWeather: [TimeZoneWeather(time: "Now", state: .cloudyNight, temp: 21),
@@ -148,6 +149,7 @@ final class HomeViewController: UIViewController {
         
         contentView.do {
             $0.showsVerticalScrollIndicator = false
+            $0.alwaysBounceVertical = true
         }
         
         buttonStackView.do {

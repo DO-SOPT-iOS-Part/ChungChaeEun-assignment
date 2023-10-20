@@ -25,6 +25,8 @@ final class DetailViewController: UIViewController {
     let separateLineView = UIView()
     
     let weatherScrollView = UIScrollView()
+    let weatherStackView = UIStackView()
+    
     lazy var nowWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].temp)
     
     lazy var afterOneHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].temp)
@@ -111,6 +113,11 @@ final class DetailViewController: UIViewController {
         weatherScrollView.do {
             $0.showsHorizontalScrollIndicator = false
         }
+        
+        weatherStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 22
+        }
     }
     
     private func setLayout() {
@@ -125,7 +132,8 @@ final class DetailViewController: UIViewController {
                              separateLineView,
                              weatherScrollView)
         
-        weatherScrollView.addSubViews(nowWeatherView,
+        weatherScrollView.addSubViews(weatherStackView)
+        weatherStackView.addArrangedSubviews(nowWeatherView,
                                       afterOneHourWeatherView,
                                       afterTwoHourWeatherView,
                                       afterThreeHourWeatherView,
@@ -186,54 +194,8 @@ final class DetailViewController: UIViewController {
             $0.bottom.equalToSuperview().inset(10)
         }
         
-        nowWeatherView.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
-        }
-        
-        afterOneHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(nowWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterTwoHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterOneHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterThreeHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterTwoHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterFourHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterThreeHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterFiveHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterFourHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterSixHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterFiveHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterSevenHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterSixHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterEightHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterSevenHourWeatherView.snp.trailing).offset(22)
-        }
-        
-        afterNineHourWeatherView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(afterEightHourWeatherView.snp.trailing).offset(22)
-            $0.trailing.equalToSuperview()
+        weatherStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
