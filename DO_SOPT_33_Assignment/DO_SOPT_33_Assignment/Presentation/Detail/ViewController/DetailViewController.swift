@@ -14,6 +14,8 @@ final class DetailViewController: UIViewController {
     
     var indexNumber: Int = 0
     
+    let verticalScrollView = UIScrollView()
+    
     let backgroundImageView = UIImageView()
     let localLabel = UILabel()
     let tempLabel = UILabel()
@@ -60,6 +62,10 @@ final class DetailViewController: UIViewController {
     private func setStyle() {
         
         self.navigationController?.navigationBar.isHidden = true
+        
+        verticalScrollView.do {
+            $0.alwaysBounceVertical = true
+        }
         
         backgroundImageView.do {
             $0.contentMode = .scaleAspectFill
@@ -122,11 +128,13 @@ final class DetailViewController: UIViewController {
     
     private func setLayout() {
         self.view.addSubViews(backgroundImageView,
-                              localLabel,
-                              tempLabel,
-                              weatherLabel,
-                              maxMinTempLabel,
-                              cardView)
+                              verticalScrollView)
+        
+        verticalScrollView.addSubViews(localLabel,
+                                      tempLabel,
+                                      weatherLabel,
+                                      maxMinTempLabel,
+                                      cardView)
         
         cardView.addSubViews(descriptionLabel,
                              separateLineView,
@@ -145,6 +153,10 @@ final class DetailViewController: UIViewController {
                                       afterNineHourWeatherView)
         
         backgroundImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        verticalScrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
