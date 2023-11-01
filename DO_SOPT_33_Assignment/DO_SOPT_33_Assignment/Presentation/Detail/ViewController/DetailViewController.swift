@@ -26,28 +26,9 @@ final class DetailViewController: UIViewController {
     let descriptionLabel = UILabel()
     let separateLineView = UIView()
     
-    let weatherScrollView = UIScrollView()
-    let weatherStackView = UIStackView()
-    
-    lazy var nowWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[0].time, state: weatherDummy[indexNumber].timeZoneWeather[0].state, temp: weatherDummy[indexNumber].timeZoneWeather[0].temp)
-    
-    lazy var afterOneHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[1].time, state: weatherDummy[indexNumber].timeZoneWeather[1].state, temp: weatherDummy[indexNumber].timeZoneWeather[1].temp)
-    
-    lazy var afterTwoHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[2].time, state: weatherDummy[indexNumber].timeZoneWeather[2].state, temp: weatherDummy[indexNumber].timeZoneWeather[2].temp)
-    
-    lazy var afterThreeHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[3].time, state: weatherDummy[indexNumber].timeZoneWeather[3].state, temp: weatherDummy[indexNumber].timeZoneWeather[3].temp)
-    
-    lazy var afterFourHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[4].time, state: weatherDummy[indexNumber].timeZoneWeather[4].state, temp: weatherDummy[indexNumber].timeZoneWeather[4].temp)
-    
-    lazy var afterFiveHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[5].time, state: weatherDummy[indexNumber].timeZoneWeather[5].state, temp: weatherDummy[indexNumber].timeZoneWeather[5].temp)
-    
-    lazy var afterSixHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[6].time, state: weatherDummy[indexNumber].timeZoneWeather[6].state, temp: weatherDummy[indexNumber].timeZoneWeather[6].temp)
-    
-    lazy var afterSevenHourWeatherView = TimeWeatherView(time:  weatherDummy[indexNumber].timeZoneWeather[7].time, state: weatherDummy[indexNumber].timeZoneWeather[7].state, temp: weatherDummy[indexNumber].timeZoneWeather[7].temp)
-    
-    lazy var afterEightHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[8].time, state: weatherDummy[indexNumber].timeZoneWeather[8].state, temp: weatherDummy[indexNumber].timeZoneWeather[8].temp)
-    
-    lazy var afterNineHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[9].time, state: weatherDummy[indexNumber].timeZoneWeather[9].state, temp: weatherDummy[indexNumber].timeZoneWeather[9].temp)
+    lazy var weatherTimeCollectionView = UICollectionView(frame: .zero,
+                                                          collectionViewLayout: weatherTimeFlowLayout)
+    let weatherTimeFlowLayout = UICollectionViewFlowLayout()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +38,14 @@ final class DetailViewController: UIViewController {
     private func setUI() {
         setStyle()
         setLayout()
+        setCollectionViewConfig()
+    }
+    
+    private func setCollectionViewConfig() {
+        self.weatherTimeCollectionView.register(DetailTimeCollectionViewCell.self,
+                                         forCellWithReuseIdentifier: DetailTimeCollectionViewCell.identifier)
+        self.weatherTimeCollectionView.delegate = self
+        self.weatherTimeCollectionView.dataSource = self
     }
     
     private func setStyle() {
@@ -116,13 +105,14 @@ final class DetailViewController: UIViewController {
             $0.backgroundColor = UIColor(white: 1, alpha: 0.25)
         }
         
-        weatherScrollView.do {
-            $0.showsHorizontalScrollIndicator = false
+        weatherTimeCollectionView.do {
+            $0.backgroundColor = .clear
         }
         
-        weatherStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 22
+        weatherTimeFlowLayout.do {
+            $0.itemSize = CGSize(width: 44 , height: 122)
+            $0.minimumLineSpacing = 22
+            $0.scrollDirection = .horizontal
         }
     }
     
@@ -138,19 +128,7 @@ final class DetailViewController: UIViewController {
         
         cardView.addSubViews(descriptionLabel,
                              separateLineView,
-                             weatherScrollView)
-        
-        weatherScrollView.addSubViews(weatherStackView)
-        weatherStackView.addArrangedSubviews(nowWeatherView,
-                                      afterOneHourWeatherView,
-                                      afterTwoHourWeatherView,
-                                      afterThreeHourWeatherView,
-                                      afterFourHourWeatherView,
-                                      afterFiveHourWeatherView,
-                                      afterSixHourWeatherView,
-                                      afterSevenHourWeatherView,
-                                      afterEightHourWeatherView,
-                                      afterNineHourWeatherView)
+                             weatherTimeCollectionView)
         
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -199,15 +177,27 @@ final class DetailViewController: UIViewController {
             $0.height.equalTo(0.2)
         }
         
-        weatherScrollView.snp.makeConstraints {
+        weatherTimeCollectionView.snp.makeConstraints {
             $0.top.equalTo(separateLineView.snp.bottom).offset(14)
             $0.leading.equalToSuperview().inset(15)
             $0.trailing.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview().inset(10)
         }
-        
-        weatherStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
     }
+}
+
+extension DetailViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return weatherDummy[self.indexNumber].timeZoneWeather.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else {return UICollectionViewCell()}
+        cell.bindData(data: weatherDummy[self.indexNumber], row: indexPath.row)
+        return cell
+    }
+}
+
+extension DetailViewController: UICollectionViewDelegate {
+    
 }

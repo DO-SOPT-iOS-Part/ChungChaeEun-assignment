@@ -34,14 +34,6 @@ class TimeWeatherView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(time: String = "", state: WeatherState, temp: Int) {
-        super.init(frame: CGRect())
-        setViewState(state: state)
-        timeLabel.text = time
-        tempLabel.text = String(temp) + "˚"
-        setUI()
-    }
-    
     func setUI() {
         setStyle()
         setLayout()
@@ -85,21 +77,6 @@ class TimeWeatherView: UIView {
         tempLabel.snp.makeConstraints {
             $0.top.equalTo(weatherImageView.snp.bottom).offset(14)
             $0.centerX.equalToSuperview()
-        }
-    }
-    
-    func setViewState(state: WeatherState) {
-        switch state {
-        case .cloudyNight:
-            weatherImageView.image = UIImage(named: "icCloudyNight")
-        case .heavyRain:
-            weatherImageView.image = UIImage(named: "icHeavyRain")
-        case .rain:
-            weatherImageView.image = UIImage(named: "icRain")
-        case .rainyDay:
-            weatherImageView.image = UIImage(named: "icRainyDay")
-        case .thunder:
-            weatherImageView.image = UIImage(named: "icThunder")
         }
     }
 }

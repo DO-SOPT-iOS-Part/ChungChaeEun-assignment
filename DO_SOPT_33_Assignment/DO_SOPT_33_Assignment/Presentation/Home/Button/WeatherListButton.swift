@@ -38,17 +38,6 @@ class WeatherListButton: UIButton {
         setAddTarget()
     }
     
-    init(local: String = "", weather: String, currentTemp: Int, maxTemp: Int, minTemp: Int, indexNumber: Int) {
-        super.init(frame: CGRect())
-        localLabel.text = local
-        weatherLabel.text = weather
-        tempLabel.text = String(currentTemp) + "˚"
-        maxTempLabel.text = "최고:" + String(maxTemp) + "˚"
-        minTempLabel.text = "최저:" + String(minTemp) + "˚"
-        self.indexNumber = indexNumber
-        setUI()
-    }
-    
     private func setUI() {
         setStyle()
         setLayout()

@@ -19,8 +19,8 @@ final class HomeViewController: UIViewController {
     let searchBar = UISearchBar()
     
     private lazy var homeCollectionView = UICollectionView(frame: .zero,
-                                                           collectionViewLayout: flowLayout)
-    private let flowLayout = UICollectionViewFlowLayout()
+                                                           collectionViewLayout: homeFlowLayout)
+    private let homeFlowLayout = UICollectionViewFlowLayout()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,10 +73,9 @@ final class HomeViewController: UIViewController {
             $0.backgroundColor = .black
         }
         
-        flowLayout.do {
+        homeFlowLayout.do {
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 40) , height: 117)
             $0.minimumLineSpacing = 16
-            $0.minimumInteritemSpacing = 3
         }
     }
     
