@@ -40,8 +40,7 @@ class DetailPageViewController: UIViewController {
         }
         
         tabBarView.do {
-            $0.backgroundColor = .clear
-            $0.layer.addBorder([.top], color: UIColor(white: 1, alpha: 0.3), width: 0.4)
+            $0.backgroundColor = UIColor(red: 42 / 255, green: 48 / 255, blue: 64 / 255, alpha: 1)
         }
         
         mapButton.do {

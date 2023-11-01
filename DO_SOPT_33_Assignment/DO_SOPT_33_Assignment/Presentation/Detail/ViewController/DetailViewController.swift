@@ -30,6 +30,12 @@ final class DetailViewController: UIViewController {
                                                           collectionViewLayout: weatherTimeFlowLayout)
     let weatherTimeFlowLayout = UICollectionViewFlowLayout()
     
+    let tenDaysCardView = UIView()
+    let tenDaysImageView = UIImageView()
+    let tenDaysTitleLabel = UILabel()
+    
+    lazy var tedDaysTableView = UITableView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -43,7 +49,7 @@ final class DetailViewController: UIViewController {
     
     private func setCollectionViewConfig() {
         self.weatherTimeCollectionView.register(DetailTimeCollectionViewCell.self,
-                                         forCellWithReuseIdentifier: DetailTimeCollectionViewCell.identifier)
+                                                forCellWithReuseIdentifier: DetailTimeCollectionViewCell.identifier)
         self.weatherTimeCollectionView.delegate = self
         self.weatherTimeCollectionView.dataSource = self
     }
@@ -114,6 +120,29 @@ final class DetailViewController: UIViewController {
             $0.minimumLineSpacing = 22
             $0.scrollDirection = .horizontal
         }
+        
+        tenDaysCardView.do {
+            $0.backgroundColor = UIColor(white: 1, alpha: 0.006)
+            $0.layer.cornerRadius = 15
+            $0.clipsToBounds = true
+            $0.layer.borderWidth = 0.5
+            $0.layer.borderColor = .init(red: 1, green: 1, blue: 1, alpha: 0.25)
+        }
+        
+        tenDaysImageView.do {
+            $0.image = UIImage(systemName: "calendar")
+            $0.tintColor = UIColor(white: 1, alpha: 0.3)
+        }
+        
+        tenDaysTitleLabel.do {
+            $0.text = "10일간의 일기예보"
+            $0.font = UIFont(name: "SFProDisplay-Medium", size: 15)
+            $0.textColor = UIColor(white: 1, alpha: 0.3)
+        }
+        
+        tedDaysTableView.do {
+            $0.backgroundColor = .clear
+        }
     }
     
     private func setLayout() {
@@ -121,14 +150,19 @@ final class DetailViewController: UIViewController {
                               verticalScrollView)
         
         verticalScrollView.addSubViews(localLabel,
-                                      tempLabel,
-                                      weatherLabel,
-                                      maxMinTempLabel,
-                                      cardView)
+                                       tempLabel,
+                                       weatherLabel,
+                                       maxMinTempLabel,
+                                       cardView,
+                                       tenDaysCardView)
         
         cardView.addSubViews(descriptionLabel,
                              separateLineView,
                              weatherTimeCollectionView)
+        
+        tenDaysCardView.addSubViews(tenDaysImageView,
+                                   tenDaysTitleLabel,
+                                    tedDaysTableView)
         
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -182,6 +216,28 @@ final class DetailViewController: UIViewController {
             $0.leading.equalToSuperview().inset(15)
             $0.trailing.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview().inset(10)
+        }
+        
+        tenDaysCardView.snp.makeConstraints {
+            $0.top.equalTo(cardView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(500)
+            $0.bottom.equalToSuperview().inset(86)
+        }
+        
+        tenDaysImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(14)
+            $0.leading.equalToSuperview().inset(15)
+        }
+        
+        tenDaysTitleLabel.snp.makeConstraints {
+            $0.centerY.equalTo(tenDaysImageView)
+            $0.leading.equalTo(tenDaysImageView.snp.trailing).offset(5)
+        }
+        
+        tedDaysTableView.snp.makeConstraints {
+            $0.top.equalTo(tenDaysTitleLabel.snp.bottom).offset(6)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
