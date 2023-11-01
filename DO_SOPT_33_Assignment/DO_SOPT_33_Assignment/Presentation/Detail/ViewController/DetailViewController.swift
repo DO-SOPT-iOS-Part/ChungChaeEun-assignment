@@ -272,7 +272,7 @@ extension DetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TenDaysTableViewCell.identifier, for: indexPath) as? TenDaysTableViewCell else {return UITableViewCell()}
-        cell.bindData()
+        cell.bindData(data: tenDaysWeatherDummy[indexPath.row])
         cell.selectionStyle = .none
         return cell
     }

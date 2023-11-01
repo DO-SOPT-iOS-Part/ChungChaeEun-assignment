@@ -18,13 +18,6 @@ struct Weather {
     let indexNumber: Int
 }
 
-struct TimeZoneWeather {
-    let time: String
-    let state: WeatherState
-    let temp: Int
-}
-
-
 let weatherDummy: [Weather] =
 [Weather(local: "강서구",
          weather: "흐림",

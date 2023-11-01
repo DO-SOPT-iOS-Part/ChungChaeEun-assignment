@@ -19,8 +19,9 @@ class TenDaysTableViewCell: UITableViewCell {
     let iconImageView = UIImageView()
     let iconHumidityLabel = UILabel()
     
+    let tempStackView = UIStackView()
     let minTempLabel = UILabel()
-    let tempGradientView = UIImageView()
+    let tempGradientView = UIView()
     let maxTempLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,6 +53,7 @@ class TenDaysTableViewCell: UITableViewCell {
         
         iconImageView.do {
             $0.contentMode = .scaleAspectFit
+            $0.tintColor = .systemBackground
         }
         
         iconHumidityLabel.do {
@@ -60,6 +62,12 @@ class TenDaysTableViewCell: UITableViewCell {
                                  green: 207.0 / 255.0,
                                  blue: 250 / 255.0,
                                  alpha: 1.0)
+        }
+        
+        tempStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 10
+            $0.alignment = .center
         }
         
         minTempLabel.do {
@@ -80,9 +88,11 @@ class TenDaysTableViewCell: UITableViewCell {
     private func setLayout() {
         self.addSubViews(dayTitleLabel,
                          iconStackView,
-                         minTempLabel,
-                         tempGradientView,
-                         maxTempLabel)
+                         tempStackView)
+        
+        tempStackView.addArrangedSubviews(minTempLabel,
+                                          tempGradientView,
+                                          maxTempLabel)
         
         iconStackView.addArrangedSubviews(iconImageView,
                                           iconHumidityLabel)
@@ -94,32 +104,36 @@ class TenDaysTableViewCell: UITableViewCell {
         
         iconStackView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(87)
+            $0.centerX.equalTo(self.snp.leading).offset(100)
         }
         
-        minTempLabel.snp.makeConstraints {
+        tempStackView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(17)
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(iconStackView.snp.trailing).offset(15)
+            $0.height.equalTo(50)
         }
         
         tempGradientView.snp.makeConstraints {
-            $0.leading.equalTo(minTempLabel.snp.trailing).offset(10)
-            $0.trailing.equalTo(maxTempLabel.snp.leading).offset(-10)
             $0.centerY.equalToSuperview()
-            $0.height.equalTo(4)
-        }
-        
-        maxTempLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(17)
+            $0.top.bottom.equalToSuperview().inset(23)
+            $0.width.equalTo(100)
         }
     }
     
-    func bindData() {
-        self.dayTitleLabel.text = "오늘"
-        self.iconImageView.image = UIImage(systemName: "cloud.fill")
-        self.iconHumidityLabel.text = "80%"
-        self.minTempLabel.text = "15˚"
-        self.maxTempLabel.text = "23˚"
+    func bindData(data: TenDaysWeather) {
+        self.dayTitleLabel.text = data.date
+        setWeatherImage()
+        if data.humidity != 0 {
+            self.iconHumidityLabel.text = String(data.humidity) + "%"
+        }
+        
+        self.minTempLabel.text = String(data.minTemp) + "˚"
+        self.maxTempLabel.text =  String(data.maxTemp) + "˚"
+    }
+    
+    private func setWeatherImage() {
+        self.iconImageView.image = UIImage(systemName: "sun.max.fill")
+        self.iconImageView.image?.withTintColor(.yellow)
+
     }
 }
