@@ -34,7 +34,7 @@ final class DetailViewController: UIViewController {
     let tenDaysImageView = UIImageView()
     let tenDaysTitleLabel = UILabel()
     
-    lazy var tedDaysTableView = UITableView()
+    lazy var tenDaysTableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +45,7 @@ final class DetailViewController: UIViewController {
         setStyle()
         setLayout()
         setCollectionViewConfig()
+        setTableViewConfig()
     }
     
     private func setCollectionViewConfig() {
@@ -52,6 +53,12 @@ final class DetailViewController: UIViewController {
                                                 forCellWithReuseIdentifier: DetailTimeCollectionViewCell.identifier)
         self.weatherTimeCollectionView.delegate = self
         self.weatherTimeCollectionView.dataSource = self
+    }
+    
+    private func setTableViewConfig() {
+        self.tenDaysTableView.register(TenDaysTableViewCell.self, forCellReuseIdentifier: TenDaysTableViewCell.identifier)
+        self.tenDaysTableView.delegate = self
+        self.tenDaysTableView.dataSource = self
     }
     
     private func setStyle() {
@@ -140,7 +147,7 @@ final class DetailViewController: UIViewController {
             $0.textColor = UIColor(white: 1, alpha: 0.3)
         }
         
-        tedDaysTableView.do {
+        tenDaysTableView.do {
             $0.backgroundColor = .clear
         }
     }
@@ -162,7 +169,7 @@ final class DetailViewController: UIViewController {
         
         tenDaysCardView.addSubViews(tenDaysImageView,
                                    tenDaysTitleLabel,
-                                    tedDaysTableView)
+                                    tenDaysTableView)
         
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -221,7 +228,7 @@ final class DetailViewController: UIViewController {
         tenDaysCardView.snp.makeConstraints {
             $0.top.equalTo(cardView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(500)
+            $0.height.equalTo(615)
             $0.bottom.equalToSuperview().inset(86)
         }
         
@@ -235,7 +242,7 @@ final class DetailViewController: UIViewController {
             $0.leading.equalTo(tenDaysImageView.snp.trailing).offset(5)
         }
         
-        tedDaysTableView.snp.makeConstraints {
+        tenDaysTableView.snp.makeConstraints {
             $0.top.equalTo(tenDaysTitleLabel.snp.bottom).offset(6)
             $0.leading.trailing.bottom.equalToSuperview()
         }
@@ -254,6 +261,23 @@ extension DetailViewController: UICollectionViewDataSource {
     }
 }
 
-extension DetailViewController: UICollectionViewDelegate {
+extension DetailViewController: UICollectionViewDelegate { }
+
+extension DetailViewController: UITableViewDelegate { }
+
+extension DetailViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TenDaysTableViewCell.identifier, for: indexPath) as? TenDaysTableViewCell else {return UITableViewCell()}
+        cell.bindData()
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
+    }
 }
