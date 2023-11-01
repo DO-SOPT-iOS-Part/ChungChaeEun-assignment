@@ -29,25 +29,25 @@ final class DetailViewController: UIViewController {
     let weatherScrollView = UIScrollView()
     let weatherStackView = UIStackView()
     
-    lazy var nowWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].temp)
+    lazy var nowWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[0].time, state: weatherDummy[indexNumber].timeZoneWeather[0].state, temp: weatherDummy[indexNumber].timeZoneWeather[0].temp)
     
-    lazy var afterOneHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].temp)
+    lazy var afterOneHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[1].time, state: weatherDummy[indexNumber].timeZoneWeather[1].state, temp: weatherDummy[indexNumber].timeZoneWeather[1].temp)
     
-    lazy var afterTwoHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[2].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[2].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[2].temp)
+    lazy var afterTwoHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[2].time, state: weatherDummy[indexNumber].timeZoneWeather[2].state, temp: weatherDummy[indexNumber].timeZoneWeather[2].temp)
     
-    lazy var afterThreeHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[3].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[3].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[3].temp)
+    lazy var afterThreeHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[3].time, state: weatherDummy[indexNumber].timeZoneWeather[3].state, temp: weatherDummy[indexNumber].timeZoneWeather[3].temp)
     
-    lazy var afterFourHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[4].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[4].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[4].temp)
+    lazy var afterFourHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[4].time, state: weatherDummy[indexNumber].timeZoneWeather[4].state, temp: weatherDummy[indexNumber].timeZoneWeather[4].temp)
     
-    lazy var afterFiveHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[5].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[5].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[5].temp)
+    lazy var afterFiveHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[5].time, state: weatherDummy[indexNumber].timeZoneWeather[5].state, temp: weatherDummy[indexNumber].timeZoneWeather[5].temp)
     
-    lazy var afterSixHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[6].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[6].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[6].temp)
+    lazy var afterSixHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[6].time, state: weatherDummy[indexNumber].timeZoneWeather[6].state, temp: weatherDummy[indexNumber].timeZoneWeather[6].temp)
     
-    lazy var afterSevenHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[7].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[7].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[7].temp)
+    lazy var afterSevenHourWeatherView = TimeWeatherView(time:  weatherDummy[indexNumber].timeZoneWeather[7].time, state: weatherDummy[indexNumber].timeZoneWeather[7].state, temp: weatherDummy[indexNumber].timeZoneWeather[7].temp)
     
-    lazy var afterEightHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[8].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[8].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[8].temp)
+    lazy var afterEightHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[8].time, state: weatherDummy[indexNumber].timeZoneWeather[8].state, temp: weatherDummy[indexNumber].timeZoneWeather[8].temp)
     
-    lazy var afterNineHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].temp)
+    lazy var afterNineHourWeatherView = TimeWeatherView(time: weatherDummy[indexNumber].timeZoneWeather[9].time, state: weatherDummy[indexNumber].timeZoneWeather[9].state, temp: weatherDummy[indexNumber].timeZoneWeather[9].temp)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,25 +73,25 @@ final class DetailViewController: UIViewController {
         }
         
         localLabel.do {
-            $0.text = HomeViewController.weatherDummy[indexNumber].local
+            $0.text = weatherDummy[indexNumber].local
             $0.font = UIFont(name: "SFProDisplay-Regular", size: 36)
             $0.textColor = .white
         }
         
         tempLabel.do {
-            $0.text = String(HomeViewController.weatherDummy[indexNumber].currentTemp) + "˚"
+            $0.text = String(weatherDummy[indexNumber].currentTemp) + "˚"
             $0.font = UIFont(name: "SFProDisplay-Thin", size: 102)
             $0.textColor = .white
         }
         
         weatherLabel.do {
-            $0.text = HomeViewController.weatherDummy[indexNumber].weather
+            $0.text = weatherDummy[indexNumber].weather
             $0.font = UIFont(name: "SFProDisplay-Regular", size: 24)
             $0.textColor = .white
         }
         
         maxMinTempLabel.do {
-            $0.text = "최고:" + String(HomeViewController.weatherDummy[indexNumber].maxTemp) + "°  최저:" + String(HomeViewController.weatherDummy[indexNumber].minTemp) + "°"
+            $0.text = "최고:" + String(weatherDummy[indexNumber].maxTemp) + "°  최저:" + String(weatherDummy[indexNumber].minTemp) + "°"
             $0.font = UIFont(name: "SFProDisplay-Medium", size: 20)
             $0.textColor = .white
         }
@@ -105,7 +105,7 @@ final class DetailViewController: UIViewController {
         }
         
         descriptionLabel.do {
-            $0.text = HomeViewController.weatherDummy[indexNumber].description
+            $0.text = weatherDummy[indexNumber].description
             $0.numberOfLines = 2
             $0.lineBreakMode = .byCharWrapping
             $0.font = UIFont(name: "SFProDisplay-Regular", size: 18)

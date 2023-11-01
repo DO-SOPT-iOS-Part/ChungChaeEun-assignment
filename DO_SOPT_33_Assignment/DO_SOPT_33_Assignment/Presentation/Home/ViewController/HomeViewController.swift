@@ -12,99 +12,15 @@ import Then
 
 final class HomeViewController: UIViewController {
     
-    static let weatherDummy: [Weather] =
-    [Weather(local: "강서구",
-             weather: "흐림",
-             
-             currentTemp: 21, maxTemp: 29, minTemp: 15,
-             description: "8:00~9:00에 강우 상태가, 18:00에 한때 흐린 상태가 예상됩니다.",
-             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .cloudyNight, temp: 21),
-                               TimeZoneWeather(time: "10시", state: .rain, temp: 21),
-                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                               TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
-                               TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
-                               TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
-                               TimeZoneWeather(time: "15시", state: .rain, temp: 22),
-                               TimeZoneWeather(time: "16시", state: .rain, temp: 21),
-                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)], indexNumber: 0),
-     Weather(local: "양천구",
-             weather: "비",
-             currentTemp: 19, maxTemp: 25, minTemp: 18,
-             description: "오전부터 계속해서 비가 내리는 상태가 예상되며, 돌풍의 풍속은 최대 4m/s 입니다.",
-             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .heavyRain, temp: 19),
-                               TimeZoneWeather(time: "10시", state: .rain, temp: 18),
-                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                               TimeZoneWeather(time: "12시", state: .heavyRain, temp: 22),
-                               TimeZoneWeather(time: "13시", state: .rain, temp: 23),
-                               TimeZoneWeather(time: "14시", state: .rain, temp: 25),
-                               TimeZoneWeather(time: "15시", state: .rain, temp: 25),
-                               TimeZoneWeather(time: "16시", state: .rain, temp: 24),
-                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 24),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 22)], indexNumber: 1),
-     Weather(local: "마포구",
-             weather: "폭우",
-             currentTemp: 13, maxTemp: 29, minTemp: 13,
-             description: "오후 12시까지 계속해서 폭우가 내릴 예정이며, 최저 기온은 13도입니다.",
-             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .heavyRain, temp: 13),
-                               TimeZoneWeather(time: "10시", state: .thunder, temp: 14),
-                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 14),
-                               TimeZoneWeather(time: "12시", state: .rain, temp: 18),
-                               TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
-                               TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
-                               TimeZoneWeather(time: "15시", state: .rainyDay, temp: 20),
-                               TimeZoneWeather(time: "16시", state: .rainyDay, temp: 19),
-                               TimeZoneWeather(time: "17시", state: .cloudyNight, temp: 19),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)], indexNumber: 2),
-     Weather(local: "영등포구",
-             weather: "비",
-             currentTemp: 21, maxTemp: 22, minTemp: 15,
-             description: "하루종일 비가 내릴 예정이며, 돌풍의 풍속은 최대 4m/s 입니다.",
-             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .rain, temp: 21),
-                               TimeZoneWeather(time: "10시", state: .rain, temp: 21),
-                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                               TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
-                               TimeZoneWeather(time: "13시", state: .rain, temp: 19),
-                               TimeZoneWeather(time: "14시", state: .rain, temp: 20),
-                               TimeZoneWeather(time: "15시", state: .rain, temp: 22),
-                               TimeZoneWeather(time: "16시", state: .rain, temp: 21),
-                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                               TimeZoneWeather(time: "18시", state: .rainyDay, temp: 19)], indexNumber: 3),
-     Weather(local: "구로구",
-             weather: "흐림",
-             currentTemp: 21, maxTemp: 20, minTemp: 15,
-             description: "8:00~9:00에 강우 상태가, 18:00에 한때 흐린 상태가 예상됩니다.",
-             timeZoneWeather: [TimeZoneWeather(time: "Now", state: .cloudyNight, temp: 21),
-                               TimeZoneWeather(time: "10시", state: .rain, temp: 21),
-                               TimeZoneWeather(time: "11시", state: .heavyRain, temp: 19),
-                               TimeZoneWeather(time: "12시", state: .thunder, temp: 19),
-                               TimeZoneWeather(time: "13시", state: .rainyDay, temp: 19),
-                               TimeZoneWeather(time: "14시", state: .rainyDay, temp: 20),
-                               TimeZoneWeather(time: "15시", state: .rain, temp: 20),
-                               TimeZoneWeather(time: "16시", state: .rain, temp: 20),
-                               TimeZoneWeather(time: "17시", state: .rainyDay, temp: 21),
-                               TimeZoneWeather(time: "18시", state: .cloudyNight, temp: 19)], indexNumber: 4)]
-
-    
-    var resultArray: [Int] = []
+    var resultArray: [Weather] = weatherDummy
     
     let moreButton = UIButton()
     let weatherTitleLabel = UILabel()
     let searchBar = UISearchBar()
     
-    let contentView = UIScrollView()
-    
-    let buttonStackView = UIStackView()
-    
-    lazy var weatherButton = WeatherListButton(local: HomeViewController.weatherDummy[0].local, weather: HomeViewController.weatherDummy[0].weather, currentTemp: HomeViewController.weatherDummy[0].currentTemp, maxTemp: HomeViewController.weatherDummy[0].maxTemp, minTemp: HomeViewController.weatherDummy[0].minTemp, indexNumber: 0)
-    
-    let secondWeatherButton = WeatherListButton(local: HomeViewController.weatherDummy[1].local, weather: HomeViewController.weatherDummy[1].weather, currentTemp: HomeViewController.weatherDummy[1].currentTemp, maxTemp: HomeViewController.weatherDummy[1].maxTemp, minTemp: HomeViewController.weatherDummy[1].minTemp, indexNumber: 1)
-    
-    let thirdWeatherButton = WeatherListButton(local: HomeViewController.weatherDummy[2].local, weather: HomeViewController.weatherDummy[2].weather, currentTemp: HomeViewController.weatherDummy[2].currentTemp, maxTemp: HomeViewController.weatherDummy[2].maxTemp, minTemp: HomeViewController.weatherDummy[2].minTemp, indexNumber: 2)
-    
-    let fourthWeatherButton = WeatherListButton(local: HomeViewController.weatherDummy[3].local, weather: HomeViewController.weatherDummy[3].weather, currentTemp: HomeViewController.weatherDummy[3].currentTemp, maxTemp: HomeViewController.weatherDummy[3].maxTemp, minTemp: HomeViewController.weatherDummy[3].minTemp, indexNumber: 3)
-    
-    let fifthWeatherButton = WeatherListButton(local: HomeViewController.weatherDummy[4].local, weather: HomeViewController.weatherDummy[4].weather, currentTemp: HomeViewController.weatherDummy[4].currentTemp, maxTemp: HomeViewController.weatherDummy[4].maxTemp, minTemp: HomeViewController.weatherDummy[4].minTemp, indexNumber: 4)
+    private lazy var homeCollectionView = UICollectionView(frame: .zero,
+                                                       collectionViewLayout: flowLayout)
+    private let flowLayout = UICollectionViewFlowLayout()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,11 +30,17 @@ final class HomeViewController: UIViewController {
     private func setUI() {
         setStyle()
         setLayout()
+        setCollectionViewConfig()
+    }
+    
+    private func setCollectionViewConfig() {
+        self.homeCollectionView.register(HomeWeatherCollectionViewCell.self,
+                                          forCellWithReuseIdentifier: HomeWeatherCollectionViewCell.identifier)
+        self.homeCollectionView.delegate = self
+        self.homeCollectionView.dataSource = self
     }
     
     private func setStyle() {
-        setButtonLayout()
-        
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .black
         
@@ -147,18 +69,14 @@ final class HomeViewController: UIViewController {
             $0.delegate = self
         }
         
-        contentView.do {
-            $0.showsVerticalScrollIndicator = false
-            $0.alwaysBounceVertical = true
+        homeCollectionView.do {
+            $0.backgroundColor = .black
         }
         
-        buttonStackView.do {
-            $0.axis = .vertical
-            $0.spacing = 16
-        }
-        
-        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
-            $0.addTarget(self, action: #selector(weatherButtonTapped), for: .touchUpInside)
+        flowLayout.do {
+            $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 40) , height: 117)
+            $0.minimumLineSpacing = 16
+            $0.minimumInteritemSpacing = 3
         }
     }
     
@@ -166,14 +84,8 @@ final class HomeViewController: UIViewController {
         self.view.addSubViews(moreButton,
                               weatherTitleLabel,
                               searchBar,
-                              contentView)
-        
-        contentView.addSubViews(buttonStackView)
-        
-        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
-            buttonStackView.addArrangedSubview($0)
-        }
-        
+                              homeCollectionView)
+                
         moreButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
             $0.trailing.equalToSuperview().inset(10)
@@ -195,15 +107,9 @@ final class HomeViewController: UIViewController {
             $0.height.equalTo(40)
         }
         
-        contentView.snp.makeConstraints {
+        homeCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(24)
             $0.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        buttonStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(16)
-            $0.centerX.equalToSuperview()
         }
     }
     
@@ -232,17 +138,19 @@ extension HomeViewController: UISearchBarDelegate {
         
         self.resultArray = []
         
-        HomeViewController.weatherDummy.forEach {
+        weatherDummy.forEach {
             if $0.local.contains(text) {
-                resultArray.append($0.indexNumber)
+                resultArray.append($0)
             }
         }
+        
         print(resultArray)
-        searchLayout()
         
         if text.isEmpty {
-            setButtonLayout()
+            self.resultArray = weatherDummy
         }
+        
+        self.homeCollectionView.reloadData()
     }
 }
 
@@ -250,36 +158,19 @@ extension HomeViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         self.view.endEditing(true)
     }
-    
-    func setButtonLayout() {
-        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
-            $0.isHidden = false
-        }
+}
+
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return resultArray.count
     }
     
-    func searchLayout() {
-        [weatherButton, secondWeatherButton, thirdWeatherButton, fourthWeatherButton, fifthWeatherButton].forEach {
-            $0.isHidden = true
-        }
-        
-        if resultArray.contains(0) {
-            weatherButton.isHidden = false
-        }
-        
-        if resultArray.contains(1) {
-            secondWeatherButton.isHidden = false
-        }
-        
-        if resultArray.contains(2) {
-            thirdWeatherButton.isHidden = false
-        }
-        
-        if resultArray.contains(3) {
-            fourthWeatherButton.isHidden = false
-        }
-        
-        if resultArray.contains(4) {
-            fifthWeatherButton.isHidden = false
-        }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeWeatherCollectionViewCell.identifier, for: indexPath) as? HomeWeatherCollectionViewCell else {return UICollectionViewCell()}
+        cell.bindData(data: resultArray[indexPath.row])
+        return cell
     }
 }
+
+extension HomeViewController: UICollectionViewDelegate { }
+
