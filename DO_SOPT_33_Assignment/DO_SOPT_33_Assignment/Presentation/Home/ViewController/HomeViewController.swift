@@ -19,7 +19,7 @@ final class HomeViewController: UIViewController {
     let searchBar = UISearchBar()
     
     private lazy var homeCollectionView = UICollectionView(frame: .zero,
-                                                       collectionViewLayout: flowLayout)
+                                                           collectionViewLayout: flowLayout)
     private let flowLayout = UICollectionViewFlowLayout()
     
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ final class HomeViewController: UIViewController {
     
     private func setCollectionViewConfig() {
         self.homeCollectionView.register(HomeWeatherCollectionViewCell.self,
-                                          forCellWithReuseIdentifier: HomeWeatherCollectionViewCell.identifier)
+                                         forCellWithReuseIdentifier: HomeWeatherCollectionViewCell.identifier)
         self.homeCollectionView.delegate = self
         self.homeCollectionView.dataSource = self
     }
@@ -85,7 +85,7 @@ final class HomeViewController: UIViewController {
                               weatherTitleLabel,
                               searchBar,
                               homeCollectionView)
-                
+        
         moreButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
             $0.trailing.equalToSuperview().inset(10)
@@ -112,11 +112,14 @@ final class HomeViewController: UIViewController {
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
+}
+
+extension HomeViewController: WeatherButtonDelegate {
     
-    @objc func weatherButtonTapped(sender: WeatherListButton) {
+    func weatherButtonTapped(sender: WeatherListButton) {
         let detailPageViewController = DetailPageViewController()
         
-        for index in 0..<5 {
+        for index in 0..<weatherDummy.count {
             let detailViewController = DetailViewController()
             detailViewController.indexNumber = index
             detailPageViewController.detailViewControllers.append(detailViewController)
@@ -126,7 +129,6 @@ final class HomeViewController: UIViewController {
         detailPageViewController.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
         detailPageViewController.detailViewControllers[sender.indexNumber].indexNumber = sender.indexNumber
-        print(sender.indexNumber)
         self.navigationController?.pushViewController(detailPageViewController, animated: true)
     }
 }
@@ -167,6 +169,7 @@ extension HomeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeWeatherCollectionViewCell.identifier, for: indexPath) as? HomeWeatherCollectionViewCell else {return UICollectionViewCell()}
+        cell.weatherButton.weatherButtonDelegate = self
         cell.bindData(data: resultArray[indexPath.row])
         return cell
     }
