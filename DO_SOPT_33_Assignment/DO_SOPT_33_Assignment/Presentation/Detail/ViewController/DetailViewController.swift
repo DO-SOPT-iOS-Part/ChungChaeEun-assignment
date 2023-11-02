@@ -150,6 +150,8 @@ final class DetailViewController: UIViewController {
         tenDaysTableView.do {
             $0.backgroundColor = .clear
             $0.isScrollEnabled = false
+            $0.separatorColor = UIColor(white: 1, alpha: 0.3)
+            $0.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         }
     }
     
