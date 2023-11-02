@@ -164,12 +164,15 @@ class TenDaysTableViewCell: UITableViewCell {
         switch state {
         case .cloudyNight:
             self.iconImageView.image = UIImage(named: "cloud.moon.fill")
+            self.iconImageView.tintColor = .white
             
         case .heavyRain:
             self.iconImageView.image = UIImage(systemName: "cloud.heavyrain.fill")
+            self.iconImageView.tintColor = .white
             
         case .rain:
             self.iconImageView.image = UIImage(systemName: "cloud.drizzle.fill")
+            self.iconImageView.tintColor = .white
             
         case .rainyDay:
             self.iconImageView.image = UIImage(systemName: "cloud.sun.rain.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.white, .systemYellow, .systemCyan]))
