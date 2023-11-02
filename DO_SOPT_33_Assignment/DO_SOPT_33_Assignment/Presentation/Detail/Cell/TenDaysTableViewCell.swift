@@ -14,6 +14,12 @@ class TenDaysTableViewCell: UITableViewCell {
     
     static let identifier: String = "TenDaysTableViewCell"
     
+    var minMinTemp: Int = 0
+    var maxMaxTemp: Int = 0
+    
+    var gradientStartValue: Double = 0.0
+    var gradientEndValue: Double = 1.0
+    
     let dayTitleLabel = UILabel()
     let iconStackView = UIStackView()
     let iconImageView = UIImageView()
@@ -95,6 +101,7 @@ class TenDaysTableViewCell: UITableViewCell {
             $0.startPoint = CGPoint(x: 0.0, y: 0.5)
             $0.endPoint = CGPoint(x: 1.0, y: 0.5)
             $0.locations = [0.0, 0.4, 0.6, 1.0]
+            $0.cornerRadius = 2
         }
         
         maxTempLabel.do {
@@ -150,6 +157,7 @@ class TenDaysTableViewCell: UITableViewCell {
         
         self.minTempLabel.text = String(data.minTemp) + "˚"
         self.maxTempLabel.text =  String(data.maxTemp) + "˚"
+        setGradientView(data: data)
     }
     
     private func setWeatherImage(state: WeatherState) {
@@ -177,5 +185,16 @@ class TenDaysTableViewCell: UITableViewCell {
         case .cloudyDay:
             self.iconImageView.image = UIImage(systemName: "cloud.sun.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.white, .systemYellow]))
         }
+    }
+
+    private func setGradientView(data: TenDaysWeather) {
+        let fullRange = Double(maxMaxTemp - minMinTemp)
+        let startOffset = Double(data.minTemp - minMinTemp) / fullRange
+        let endOffset = 1.0 - Double(data.maxTemp - minMinTemp) / fullRange
+        
+        tempGradientLayer.frame = CGRect(x: tempGradientView.bounds.minX + tempGradientView.bounds.width * CGFloat(startOffset),
+                                         y: tempGradientView.bounds.minY,
+                                         width: tempGradientView.bounds.width * CGFloat(1 - startOffset - endOffset),
+                                         height: tempGradientView.bounds.height)
     }
 }

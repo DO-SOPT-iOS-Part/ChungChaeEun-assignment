@@ -13,6 +13,10 @@ import Then
 final class DetailViewController: UIViewController {
     
     var indexNumber: Int = 0
+    var minTempArray: [Int] = []
+    var maxTempArray: [Int] = []
+    var minMinTemp: Int = 0
+    var maxMaxTemp: Int = 0
     
     let verticalScrollView = UIScrollView()
     
@@ -250,7 +254,19 @@ final class DetailViewController: UIViewController {
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
+    
+    func caculateMinMax(data: [TenDaysWeather]) {
+        data.forEach {
+            minTempArray.append($0.minTemp)
+            maxTempArray.append($0.maxTemp)
+        }
+        
+        minMinTemp = minTempArray.min() ?? 0
+        maxMaxTemp = maxTempArray.max() ?? 0
+    }
 }
+
+extension DetailViewController: UICollectionViewDelegate { }
 
 extension DetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -264,8 +280,6 @@ extension DetailViewController: UICollectionViewDataSource {
     }
 }
 
-extension DetailViewController: UICollectionViewDelegate { }
-
 extension DetailViewController: UITableViewDelegate { }
 
 extension DetailViewController: UITableViewDataSource {
@@ -275,6 +289,9 @@ extension DetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TenDaysTableViewCell.identifier, for: indexPath) as? TenDaysTableViewCell else {return UITableViewCell()}
+        self.caculateMinMax(data: tenDaysWeatherDummy)
+        cell.minMinTemp = minMinTemp
+        cell.maxMaxTemp = maxMaxTemp
         cell.bindData(data: tenDaysWeatherDummy[indexPath.row])
         cell.selectionStyle = .none
         return cell
