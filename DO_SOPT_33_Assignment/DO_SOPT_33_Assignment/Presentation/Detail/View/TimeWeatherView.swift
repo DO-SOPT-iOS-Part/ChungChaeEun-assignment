@@ -10,14 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-enum WeatherState {
-    case cloudyNight
-    case heavyRain
-    case rain
-    case rainyDay
-    case thunder
-}
-
 class TimeWeatherView: UIView {
     
     let timeLabel = UILabel()

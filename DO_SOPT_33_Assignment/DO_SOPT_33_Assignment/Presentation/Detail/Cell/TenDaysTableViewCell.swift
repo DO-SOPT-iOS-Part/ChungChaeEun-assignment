@@ -13,7 +13,7 @@ import Then
 class TenDaysTableViewCell: UITableViewCell {
     
     static let identifier: String = "TenDaysTableViewCell"
-
+    
     let dayTitleLabel = UILabel()
     let iconStackView = UIStackView()
     let iconImageView = UIImageView()
@@ -122,7 +122,8 @@ class TenDaysTableViewCell: UITableViewCell {
     
     func bindData(data: TenDaysWeather) {
         self.dayTitleLabel.text = data.date
-        setWeatherImage()
+        setWeatherImage(state: data.weather)
+        
         if data.humidity != 0 {
             self.iconHumidityLabel.text = String(data.humidity) + "%"
         }
@@ -131,9 +132,30 @@ class TenDaysTableViewCell: UITableViewCell {
         self.maxTempLabel.text =  String(data.maxTemp) + "˚"
     }
     
-    private func setWeatherImage() {
-        self.iconImageView.image = UIImage(systemName: "sun.max.fill")
-        self.iconImageView.image?.withTintColor(.yellow)
-
+    private func setWeatherImage(state: WeatherState) {
+        switch state {
+        case .cloudyNight:
+            self.iconImageView.image = UIImage(named: "cloud.moon.fill")
+            
+        case .heavyRain:
+            self.iconImageView.image = UIImage(systemName: "cloud.heavyrain.fill")
+            
+        case .rain:
+            self.iconImageView.image = UIImage(systemName: "cloud.drizzle.fill")
+            
+        case .rainyDay:
+            self.iconImageView.image = UIImage(systemName: "cloud.sun.rain.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.white, .systemYellow, .systemCyan]))
+            self.iconImageView.tintColor = .white
+            
+        case .thunder:
+            self.iconImageView.image = UIImage(systemName: "cloud.bolt.fill")
+            
+        case .sun:
+            self.iconImageView.image = UIImage(systemName: "sun.max.fill")
+            self.iconImageView.tintColor = .systemYellow
+            
+        case .cloudyDay:
+            self.iconImageView.image = UIImage(systemName: "cloud.sun.fill", withConfiguration: UIImage.SymbolConfiguration(paletteColors: [.white, .systemYellow]))
+        }
     }
 }

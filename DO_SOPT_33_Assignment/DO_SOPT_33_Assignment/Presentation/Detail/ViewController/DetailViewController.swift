@@ -129,7 +129,7 @@ final class DetailViewController: UIViewController {
         }
         
         tenDaysCardView.do {
-            $0.backgroundColor = UIColor(white: 1, alpha: 0.006)
+            $0.backgroundColor = UIColor(hexCode: "2D3340", alpha: 0.2)
             $0.layer.cornerRadius = 15
             $0.clipsToBounds = true
             $0.layer.borderWidth = 0.5
@@ -149,6 +149,7 @@ final class DetailViewController: UIViewController {
         
         tenDaysTableView.do {
             $0.backgroundColor = .clear
+            $0.isScrollEnabled = false
         }
     }
     
@@ -228,7 +229,7 @@ final class DetailViewController: UIViewController {
         tenDaysCardView.snp.makeConstraints {
             $0.top.equalTo(cardView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(615)
+            $0.height.equalTo(588)
             $0.bottom.equalToSuperview().inset(86)
         }
         

@@ -63,6 +63,8 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
             timeWeatherView.weatherImageView.image = UIImage(named: "icRainyDay")
         case .thunder:
             timeWeatherView.weatherImageView.image = UIImage(named: "icThunder")
+        default:
+            return
         }
     }
 }
