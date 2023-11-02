@@ -196,5 +196,34 @@ class TenDaysTableViewCell: UITableViewCell {
                                          y: tempGradientView.bounds.minY,
                                          width: tempGradientView.bounds.width * CGFloat(1 - startOffset - endOffset),
                                          height: tempGradientView.bounds.height)
+        
+        if data.date == "오늘" {
+            let nowView = UIView().then {
+                $0.backgroundColor = .white
+                $0.layer.cornerRadius = 2
+                $0.clipsToBounds = true
+            }
+            
+            let nowBackgroundView = UIView().then {
+                $0.backgroundColor = UIColor(hexCode: "262B36", alpha: 1)
+                $0.layer.cornerRadius = 4
+                $0.clipsToBounds = true
+            }
+            
+            // TODO: mask subtract 과정 필요
+            tempGradientView.addSubViews(nowBackgroundView,
+                                         nowView)
+            
+            nowBackgroundView.snp.makeConstraints {
+                $0.width.height.equalTo(8)
+                $0.centerY.equalToSuperview()
+                $0.leading.equalToSuperview().inset(40)
+            }
+            
+            nowView.snp.makeConstraints {
+                $0.width.height.equalTo(4)
+                $0.center.equalTo(nowBackgroundView)
+            }
+        }
     }
 }
