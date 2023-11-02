@@ -21,8 +21,16 @@ class TenDaysTableViewCell: UITableViewCell {
     
     let tempStackView = UIStackView()
     let minTempLabel = UILabel()
-    let tempGradientView = UIView()
+    let tempGradientView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 4))
     let maxTempLabel = UILabel()
+    
+    let gradientColors: [CGColor] = [
+        .init(red: 150/255, green: 208/255, blue: 168/255, alpha: 1),
+        .init(red: 181/255, green: 207/255, blue: 121/255, alpha: 1),
+        .init(red: 248/255, green: 215/255, blue: 74/255, alpha: 1),
+        .init(red: 239/255, green: 136/255, blue: 53/255, alpha: 1)
+    ]
+    let tempGradientLayer = CAGradientLayer()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -76,7 +84,17 @@ class TenDaysTableViewCell: UITableViewCell {
         }
         
         tempGradientView.do {
-            $0.backgroundColor = .red
+            $0.backgroundColor = UIColor(hexCode: "000000", alpha: 0.15)
+            $0.layer.cornerRadius = 2
+            $0.clipsToBounds = true
+        }
+        
+        tempGradientLayer.do {
+            $0.frame = tempGradientView.bounds
+            $0.colors = gradientColors
+            $0.startPoint = CGPoint(x: 0.0, y: 0.5)
+            $0.endPoint = CGPoint(x: 1.0, y: 0.5)
+            $0.locations = [0.0, 0.4, 0.6, 1.0]
         }
         
         maxTempLabel.do {
@@ -93,6 +111,8 @@ class TenDaysTableViewCell: UITableViewCell {
         tempStackView.addArrangedSubviews(minTempLabel,
                                           tempGradientView,
                                           maxTempLabel)
+        
+        tempGradientView.layer.addSublayer(tempGradientLayer)
         
         iconStackView.addArrangedSubviews(iconImageView,
                                           iconHumidityLabel)
