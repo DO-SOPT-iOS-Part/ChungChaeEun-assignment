@@ -65,6 +65,7 @@ class TimeCardView: UICollectionViewCell {
         
         weatherTimeCollectionView.do {
             $0.backgroundColor = .clear
+            $0.isUserInteractionEnabled = true
         }
         
         weatherTimeFlowLayout.do {

@@ -61,6 +61,7 @@ final class DetailViewController: UIViewController {
         detailCollectionView.do {
             $0.backgroundColor = .clear
             $0.showsVerticalScrollIndicator = false
+            $0.isUserInteractionEnabled = true
         }
         
         detailFlowLayout.do {
@@ -137,6 +138,7 @@ extension DetailViewController: UICollectionViewDataSource {
             case 0:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeCardView.identifier, for: indexPath) as? TimeCardView else { return UICollectionViewCell() }
                 cell.configTimeCardView(indexNumber: indexNumber)
+                cell.weatherTimeCollectionView.isScrollEnabled = true
                 cell.weatherTimeCollectionView.delegate = self
                 cell.weatherTimeCollectionView.dataSource = self
                 return cell
