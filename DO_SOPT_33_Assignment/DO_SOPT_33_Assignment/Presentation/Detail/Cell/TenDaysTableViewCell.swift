@@ -14,8 +14,8 @@ class TenDaysTableViewCell: UITableViewCell {
     
     static let identifier: String = "TenDaysTableViewCell"
     
-    var minMinTemp: Int = 0
-    var maxMaxTemp: Int = 0
+    var minMinTemp: Int = 10
+    var maxMaxTemp: Int = 30
     
     var gradientStartValue: Double = 0.0
     var gradientEndValue: Double = 1.0
@@ -213,7 +213,6 @@ class TenDaysTableViewCell: UITableViewCell {
                 $0.clipsToBounds = true
             }
             
-            // TODO: mask subtract 과정 필요
             tempGradientView.addSubViews(nowBackgroundView,
                                          nowView)
             

@@ -47,7 +47,7 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
     
     func bindData(data: Weather, row: Int) {
         timeWeatherView.timeLabel.text = data.timeZoneWeather[row].time
-        timeWeatherView.tempLabel.text = String(data.timeZoneWeather[row].temp)
+        timeWeatherView.tempLabel.text = String(data.timeZoneWeather[row].temp) + "˚"
         setViewState(state: data.timeZoneWeather[row].state)
     }
     
