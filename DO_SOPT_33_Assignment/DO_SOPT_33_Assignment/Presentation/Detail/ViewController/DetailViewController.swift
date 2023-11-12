@@ -13,41 +13,16 @@ import Then
 final class DetailViewController: UIViewController {
     
     var indexNumber: Int = 0
-    
-    let verticalScrollView = UIScrollView()
+    var minTempArray: [Int] = []
+    var maxTempArray: [Int] = []
+    var minMinTemp: Int = 0
+    var maxMaxTemp: Int = 0
     
     let backgroundImageView = UIImageView()
-    let localLabel = UILabel()
-    let tempLabel = UILabel()
-    let weatherLabel = UILabel()
-    let maxMinTempLabel = UILabel()
     
-    let cardView = UIView()
-    let descriptionLabel = UILabel()
-    let separateLineView = UIView()
-    
-    let weatherScrollView = UIScrollView()
-    let weatherStackView = UIStackView()
-    
-    lazy var nowWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[0].temp)
-    
-    lazy var afterOneHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[1].temp)
-    
-    lazy var afterTwoHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[2].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[2].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[2].temp)
-    
-    lazy var afterThreeHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[3].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[3].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[3].temp)
-    
-    lazy var afterFourHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[4].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[4].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[4].temp)
-    
-    lazy var afterFiveHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[5].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[5].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[5].temp)
-    
-    lazy var afterSixHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[6].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[6].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[6].temp)
-    
-    lazy var afterSevenHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[7].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[7].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[7].temp)
-    
-    lazy var afterEightHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[8].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[8].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[8].temp)
-    
-    lazy var afterNineHourWeatherView = TimeWeatherView(time: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].time, state: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].state, temp: HomeViewController.weatherDummy[indexNumber].timeZoneWeather[9].temp)
+    lazy var detailCollectionView = UICollectionView(frame: .zero,
+                                                     collectionViewLayout: detailFlowLayout)
+    let detailFlowLayout = UICollectionViewFlowLayout()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,157 +32,190 @@ final class DetailViewController: UIViewController {
     private func setUI() {
         setStyle()
         setLayout()
+        setDelegate()
+        configCollectionView()
+    }
+    
+    private func setDelegate() {
+        self.detailCollectionView.delegate = self
+        self.detailCollectionView.dataSource = self
+    }
+    
+    private func configCollectionView() {
+        self.detailCollectionView.register(DetailLocalView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DetailLocalView.identifier)
+        
+        self.detailCollectionView.register(TimeCardView.self, forCellWithReuseIdentifier: TimeCardView.identifier)
+        
+        self.detailCollectionView.register(TenDaysCardView.self, forCellWithReuseIdentifier: TenDaysCardView.identifier)
     }
     
     private func setStyle() {
         
         self.navigationController?.navigationBar.isHidden = true
         
-        verticalScrollView.do {
-            $0.alwaysBounceVertical = true
-        }
-        
         backgroundImageView.do {
             $0.contentMode = .scaleAspectFill
             $0.image = UIImage(named: "imgBackground")
         }
         
-        localLabel.do {
-            $0.text = HomeViewController.weatherDummy[indexNumber].local
-            $0.font = UIFont(name: "SFProDisplay-Regular", size: 36)
-            $0.textColor = .white
+        detailCollectionView.do {
+            $0.backgroundColor = .clear
+            $0.showsVerticalScrollIndicator = false
+            $0.isUserInteractionEnabled = true
         }
         
-        tempLabel.do {
-            $0.text = String(HomeViewController.weatherDummy[indexNumber].currentTemp) + "˚"
-            $0.font = UIFont(name: "SFProDisplay-Thin", size: 102)
-            $0.textColor = .white
-        }
-        
-        weatherLabel.do {
-            $0.text = HomeViewController.weatherDummy[indexNumber].weather
-            $0.font = UIFont(name: "SFProDisplay-Regular", size: 24)
-            $0.textColor = .white
-        }
-        
-        maxMinTempLabel.do {
-            $0.text = "최고:" + String(HomeViewController.weatherDummy[indexNumber].maxTemp) + "°  최저:" + String(HomeViewController.weatherDummy[indexNumber].minTemp) + "°"
-            $0.font = UIFont(name: "SFProDisplay-Medium", size: 20)
-            $0.textColor = .white
-        }
-        
-        cardView.do {
-            $0.backgroundColor = UIColor(white: 1, alpha: 0.006)
-            $0.layer.cornerRadius = 15
-            $0.clipsToBounds = true
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = .init(red: 1, green: 1, blue: 1, alpha: 0.25)
-        }
-        
-        descriptionLabel.do {
-            $0.text = HomeViewController.weatherDummy[indexNumber].description
-            $0.numberOfLines = 2
-            $0.lineBreakMode = .byCharWrapping
-            $0.font = UIFont(name: "SFProDisplay-Regular", size: 18)
-            $0.textColor = .white
-        }
-        
-        separateLineView.do {
-            $0.backgroundColor = UIColor(white: 1, alpha: 0.25)
-        }
-        
-        weatherScrollView.do {
-            $0.showsHorizontalScrollIndicator = false
-        }
-        
-        weatherStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 22
+        detailFlowLayout.do {
+            $0.scrollDirection = .vertical
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         }
     }
     
     private func setLayout() {
         self.view.addSubViews(backgroundImageView,
-                              verticalScrollView)
-        
-        verticalScrollView.addSubViews(localLabel,
-                                      tempLabel,
-                                      weatherLabel,
-                                      maxMinTempLabel,
-                                      cardView)
-        
-        cardView.addSubViews(descriptionLabel,
-                             separateLineView,
-                             weatherScrollView)
-        
-        weatherScrollView.addSubViews(weatherStackView)
-        weatherStackView.addArrangedSubviews(nowWeatherView,
-                                      afterOneHourWeatherView,
-                                      afterTwoHourWeatherView,
-                                      afterThreeHourWeatherView,
-                                      afterFourHourWeatherView,
-                                      afterFiveHourWeatherView,
-                                      afterSixHourWeatherView,
-                                      afterSevenHourWeatherView,
-                                      afterEightHourWeatherView,
-                                      afterNineHourWeatherView)
+                              detailCollectionView)
         
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        verticalScrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        localLabel.snp.makeConstraints {
+        detailCollectionView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(78)
-            $0.centerX.equalToSuperview()
-        }
-        
-        tempLabel.snp.makeConstraints {
-            $0.top.equalTo(localLabel.snp.bottom).offset(4)
-            $0.centerX.equalToSuperview()
-        }
-        
-        weatherLabel.snp.makeConstraints {
-            $0.top.equalTo(tempLabel.snp.bottom).offset(4)
-            $0.centerX.equalToSuperview()
-        }
-        
-        maxMinTempLabel.snp.makeConstraints {
-            $0.top.equalTo(weatherLabel.snp.bottom).offset(4)
-            $0.centerX.equalToSuperview()
-        }
-        
-        cardView.snp.makeConstraints {
-            $0.top.equalTo(maxMinTempLabel.snp.bottom).offset(44)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(212)
-            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(82)
+        }
+    }
+    
+    func caculateMinMax(data: [TenDaysWeather]) {
+        data.forEach {
+            minTempArray.append($0.minTemp)
+            maxTempArray.append($0.maxTemp)
         }
         
-        descriptionLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(10)
-            $0.leading.trailing.equalToSuperview().inset(15)
+        minMinTemp = minTempArray.min() ?? 0
+        maxMaxTemp = maxTempArray.max() ?? 0
+    }
+}
+
+extension DetailViewController: UICollectionViewDelegate { }
+extension DetailViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if collectionView == detailCollectionView {
+            return 2
+        } else {
+            return 1
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == detailCollectionView {
+            return 1
+        } else {
+            return weatherDummy.count
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == detailCollectionView {
+            switch indexPath.section {
+            case 0:
+                CGSize(width: UIScreen.main.bounds.width - 40, height: 212)
+
+            case 1:
+                CGSize(width: UIScreen.main.bounds.width - 40, height: 588)
+
+            default:
+                CGSize.zero
+            }
+        } else {
+            CGSize(width: 44, height: 122)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == detailCollectionView {
+            switch indexPath.section {
+            case 0:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeCardView.identifier, for: indexPath) as? TimeCardView else { return UICollectionViewCell() }
+                cell.configTimeCardView(indexNumber: indexNumber)
+                cell.weatherTimeCollectionView.isScrollEnabled = true
+                cell.weatherTimeCollectionView.delegate = self
+                cell.weatherTimeCollectionView.dataSource = self
+                return cell
+            case 1:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TenDaysCardView.identifier, for: indexPath) as? TenDaysCardView else { return UICollectionViewCell() }
+                self.caculateMinMax(data: tenDaysWeatherDummy)
+                
+                cell.tenDaysTableView.delegate = self
+                cell.tenDaysTableView.dataSource = self
+                return cell
+            default:
+                return UICollectionViewCell()
+            }
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
+            cell.bindData(data: weatherDummy[self.indexNumber], row: indexPath.row)
+            return cell
+        }
+    }
+}
+
+
+extension DetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        separateLineView.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(11)
-            $0.leading.equalToSuperview().inset(14)
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(0.2)
+        switch indexPath.section {
+        case 0:
+            if kind == UICollectionView.elementKindSectionHeader {
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailLocalView.identifier, for: indexPath) as! DetailLocalView
+                headerView.configLocalView(indexNumber: indexNumber)
+                return headerView
+            } else {
+                return UICollectionReusableView()
+            }
+        default:
+            return UICollectionReusableView()
         }
-        
-        weatherScrollView.snp.makeConstraints {
-            $0.top.equalTo(separateLineView.snp.bottom).offset(14)
-            $0.leading.equalToSuperview().inset(15)
-            $0.trailing.equalToSuperview().inset(12)
-            $0.bottom.equalToSuperview().inset(10)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if collectionView == detailCollectionView {
+            switch section {
+            case 0:
+                return CGSize(width: UIScreen.main.bounds.width, height: 260)
+            default:
+                return CGSize.zero
+            }
+        } else {
+            return CGSize.zero
         }
-        
-        weatherStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        if collectionView == detailCollectionView {
+//            return 20
+//        } else {
+//            return 22
+//        }
+//    }
+}
+
+extension DetailViewController: UITableViewDelegate { }
+extension DetailViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TenDaysTableViewCell.identifier, for: indexPath) as? TenDaysTableViewCell else { return UITableViewCell() }
+        cell.bindData(data: tenDaysWeatherDummy[indexPath.row])
+        cell.selectionStyle = .none
+        cell.minMinTemp = minMinTemp
+        cell.maxMaxTemp = maxMaxTemp
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
     }
 }

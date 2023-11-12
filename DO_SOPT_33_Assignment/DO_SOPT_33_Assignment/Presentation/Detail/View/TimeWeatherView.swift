@@ -10,14 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-enum WeatherState {
-    case cloudyNight
-    case heavyRain
-    case rain
-    case rainyDay
-    case thunder
-}
-
 class TimeWeatherView: UIView {
     
     let timeLabel = UILabel()
@@ -32,14 +24,6 @@ class TimeWeatherView: UIView {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    init(time: String = "", state: WeatherState, temp: Int) {
-        super.init(frame: CGRect())
-        setViewState(state: state)
-        timeLabel.text = time
-        tempLabel.text = String(temp) + "˚"
-        setUI()
     }
     
     func setUI() {
@@ -85,21 +69,6 @@ class TimeWeatherView: UIView {
         tempLabel.snp.makeConstraints {
             $0.top.equalTo(weatherImageView.snp.bottom).offset(14)
             $0.centerX.equalToSuperview()
-        }
-    }
-    
-    func setViewState(state: WeatherState) {
-        switch state {
-        case .cloudyNight:
-            weatherImageView.image = UIImage(named: "icCloudyNight")
-        case .heavyRain:
-            weatherImageView.image = UIImage(named: "icHeavyRain")
-        case .rain:
-            weatherImageView.image = UIImage(named: "icRain")
-        case .rainyDay:
-            weatherImageView.image = UIImage(named: "icRainyDay")
-        case .thunder:
-            weatherImageView.image = UIImage(named: "icThunder")
         }
     }
 }

@@ -10,9 +10,14 @@ import UIKit
 import SnapKit
 import Then
 
+protocol WeatherButtonDelegate: AnyObject {
+    func weatherButtonTapped(sender: WeatherListButton)
+}
+
 class WeatherListButton: UIButton {
     
     var indexNumber = 0
+    weak var weatherButtonDelegate: WeatherButtonDelegate?
     
     let myPlaceLabel = UILabel()
     let localLabel = UILabel()
@@ -24,27 +29,22 @@ class WeatherListButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
+        setAddTarget()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUI()
-    }
-    
-    init(local: String = "", weather: String, currentTemp: Int, maxTemp: Int, minTemp: Int, indexNumber: Int) {
-        super.init(frame: CGRect())
-        localLabel.text = local
-        weatherLabel.text = weather
-        tempLabel.text = String(currentTemp) + "˚"
-        maxTempLabel.text = "최고:" + String(maxTemp) + "˚"
-        minTempLabel.text = "최저:" + String(minTemp) + "˚"
-        self.indexNumber = indexNumber
-        setUI()
+        setAddTarget()
     }
     
     private func setUI() {
         setStyle()
         setLayout()
+    }
+    
+    private func setAddTarget() {
+        self.addTarget(self, action: #selector(weatherButtonTapped), for: .touchUpInside)
     }
     
     func setStyle() {
@@ -125,5 +125,9 @@ class WeatherListButton: UIButton {
             $0.bottom.equalTo(minTempLabel)
             $0.trailing.equalTo(minTempLabel.snp.leading).offset(-6)
         }
+    }
+    
+    @objc func weatherButtonTapped() {
+        weatherButtonDelegate?.weatherButtonTapped(sender: self)
     }
 }
