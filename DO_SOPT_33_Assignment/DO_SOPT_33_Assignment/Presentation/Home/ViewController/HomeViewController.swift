@@ -166,7 +166,6 @@ extension HomeViewController {
 
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.resultArray = mainWeathersData
         return resultArray.count
     }
     
@@ -200,6 +199,7 @@ extension HomeViewController {
 
                 DispatchQueue.main.async {
                     self.mainWeathersData = weatherDataArray
+                    self.resultArray = self.mainWeathersData
                     self.homeCollectionView.reloadData()
                     print("💛💛💛💛💛💛💛")
                 }
