@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 // MARK: - WeatherResponseDTO
 struct WeatherResponseDTO: Codable {
     let coord: Coord
@@ -39,19 +37,22 @@ struct Coord: Codable {
 struct Main: Codable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity: Int
+    let seaLevel, grndLevel: Int?
 
     enum CodingKeys: String, CodingKey {
         case temp
         case feelsLike = "feels_like"
         case tempMin = "temp_min"
         case tempMax = "temp_max"
+        case seaLevel = "sea_level"
+        case grndLevel = "grnd_level"
         case pressure, humidity
     }
 }
 
 // MARK: - Sys
 struct Sys: Codable {
-    let type, id: Int
+    let type, id: Int?
     let country: String
     let sunrise, sunset: Int
 }
@@ -66,4 +67,5 @@ struct Weathers: Codable {
 struct Wind: Codable {
     let speed: Double
     let deg: Int
+    let gust: Double?
 }

@@ -120,9 +120,9 @@ extension HomeViewController: WeatherButtonDelegate {
     func weatherButtonTapped(sender: WeatherListButton) {
         let detailPageViewController = DetailPageViewController()
         
-        for index in 0..<weatherDummy.count {
+        for index in 0..<mainWeathersData.count {
             let detailViewController = DetailViewController()
-            detailViewController.indexNumber = index
+//            detailViewController.indexNumber = index
             detailPageViewController.detailViewControllers.append(detailViewController)
         }
         
