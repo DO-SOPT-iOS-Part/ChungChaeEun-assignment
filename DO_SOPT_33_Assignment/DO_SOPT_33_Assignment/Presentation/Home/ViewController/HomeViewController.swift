@@ -25,8 +25,12 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadWeatherData()
         setUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadWeatherData()
     }
     
     private func setUI() {
@@ -120,9 +124,10 @@ extension HomeViewController: WeatherButtonDelegate {
     func weatherButtonTapped(sender: WeatherListButton) {
         let detailPageViewController = DetailPageViewController()
         
-        for index in 0..<mainWeathersData.count {
+        for index in 0..<resultArray.count {
             let detailViewController = DetailViewController()
-//            detailViewController.indexNumber = index
+            detailViewController.indexNumber = index
+            detailViewController.detailWeatherData = resultArray[index]
             detailPageViewController.detailViewControllers.append(detailViewController)
         }
         
@@ -173,6 +178,7 @@ extension HomeViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeWeatherCollectionViewCell.identifier, for: indexPath) as? HomeWeatherCollectionViewCell else { return UICollectionViewCell() }
         cell.weatherButton.weatherButtonDelegate = self
         cell.bindData(data: resultArray[indexPath.row])
+        cell.weatherButton.indexNumber = indexPath.row
         return cell
     }
 }
@@ -185,6 +191,7 @@ extension HomeViewController {
             do {
                 let cities = ["seoul", "daegu", "busan", "daejeon", "mokpo"]
                 
+                self.mainWeathersData = []
                 var weatherDataArray: [WeatherResponseDTO] = []
                 
                 for cityName in cities {

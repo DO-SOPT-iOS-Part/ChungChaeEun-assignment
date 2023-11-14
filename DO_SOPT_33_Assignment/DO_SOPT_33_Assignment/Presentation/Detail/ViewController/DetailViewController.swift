@@ -18,6 +18,8 @@ final class DetailViewController: UIViewController {
     var minMinTemp: Int = 0
     var maxMaxTemp: Int = 0
     
+    var detailWeatherData: WeatherResponseDTO = WeatherResponseDTO(coord: Coord(lon: 0, lat: 0), weather: [Weathers(id: 0, main: "", description: "", icon: "")], base: "", main: Main(temp: 0.0, feelsLike: 0.0, tempMin: 0.0, tempMax: 0.0, pressure: 0, humidity: 0, seaLevel: 0, grndLevel: 0), visibility: 0, wind: Wind(speed: 0.0, deg: 0, gust: 0.0), clouds: Clouds(all: 0), dt: 0, sys: Sys(type: 0, id: 0, country: "", sunrise: 0, sunset: 0), timezone: 0, id: 0, name: "", cod: 0)
+    
     let backgroundImageView = UIImageView()
     
     lazy var detailCollectionView = UICollectionView(frame: .zero,
@@ -168,7 +170,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             if kind == UICollectionView.elementKindSectionHeader {
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailLocalView.identifier, for: indexPath) as! DetailLocalView
-                headerView.configLocalView(indexNumber: indexNumber)
+                headerView.configLocalView(data: detailWeatherData)
                 return headerView
             } else {
                 return UICollectionReusableView()
@@ -190,14 +192,6 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
             return CGSize.zero
         }
     }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        if collectionView == detailCollectionView {
-//            return 20
-//        } else {
-//            return 22
-//        }
-//    }
 }
 
 extension DetailViewController: UITableViewDelegate { }

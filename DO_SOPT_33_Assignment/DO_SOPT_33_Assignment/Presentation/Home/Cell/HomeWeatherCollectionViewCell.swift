@@ -52,6 +52,5 @@ class HomeWeatherCollectionViewCell: UICollectionViewCell {
         weatherButton.tempLabel.text = String(Int(data.main.temp)) + "˚"
         weatherButton.maxTempLabel.text = "최고:" + String(Int(data.main.tempMax)) + "˚"
         weatherButton.minTempLabel.text = "최저:" + String(Int(data.main.tempMin)) + "˚"
-//        weatherButton.indexNumber = data.indexNumber
     }
 }
