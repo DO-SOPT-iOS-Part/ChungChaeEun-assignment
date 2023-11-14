@@ -1,20 +1,20 @@
 //
-//  WeatherService.swift
+//  WeatherDetailService.swift
 //  DO_SOPT_33_Assignment
 //
-//  Created by 정채은 on 11/13/23.
+//  Created by 정채은 on 11/14/23.
 //
 
 import Foundation
 
-class WeatherService {
-    static let shared = WeatherService()
+class WeatherDetailService {
+    static let shared = WeatherDetailService()
     private init() {}
     
-    func makeWeatherRequest(cityName: String) -> URLRequest {
+    func makeDetailWeatherRequest(cityName: String) -> URLRequest {
         let baseURL = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.baseURL) as? String ?? ""
         let apiKey = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.apiKey) as? String ?? ""
-        let url = URL(string: baseURL + "weather?units=metric&q=\(cityName)&appid=" + apiKey)!
+        let url = URL(string: baseURL + "forecast?units=metric&q=\(cityName)&appid=" + apiKey)!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         let header = ["Content-Type": "application/json"]
@@ -24,9 +24,9 @@ class WeatherService {
         return request
     }
     
-    func GetWeatherData(cityName: String) async throws -> WeatherResponseDTO? {
+    func GetDetailWeatherData(cityName: String) async throws -> WeatherDetailResponseDTO? {
         do {
-            let request = self.makeWeatherRequest(cityName: cityName)
+            let request = self.makeDetailWeatherRequest(cityName: cityName)
             let (data, response) = try await URLSession.shared.data(for: request)
             dump(request)
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -39,10 +39,10 @@ class WeatherService {
         }
     }
     
-    private func parseCheckData(data: Data) -> WeatherResponseDTO? {
+    private func parseCheckData(data: Data) -> WeatherDetailResponseDTO? {
         do {
             let jsonDecoder = JSONDecoder()
-            let result = try jsonDecoder.decode(WeatherResponseDTO.self, from: data)
+            let result = try jsonDecoder.decode(WeatherDetailResponseDTO.self, from: data)
             return result
         } catch {
             print(error)

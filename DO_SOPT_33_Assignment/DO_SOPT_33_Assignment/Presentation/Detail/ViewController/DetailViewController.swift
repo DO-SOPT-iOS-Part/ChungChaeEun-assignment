@@ -31,6 +31,11 @@ final class DetailViewController: UIViewController {
         setUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadWeatherDetailData()
+    }
+    
     private func setUI() {
         setStyle()
         setLayout()
@@ -213,3 +218,37 @@ extension DetailViewController: UITableViewDataSource {
         return 55
     }
 }
+
+extension DetailViewController {
+    private func loadWeatherDetailData() {
+        Task {
+            do {
+                let cities = ["seoul", "daegu", "busan", "daejeon", "mokpo"]
+                
+//                self.mainWeathersData = []
+                var weatherDataArray: [WeatherDetailResponseDTO] = []
+                
+                for cityName in cities {
+                    do {
+                        if let receivedData = try await WeatherDetailService.shared.GetDetailWeatherData(cityName: cityName) {
+                            weatherDataArray.append(receivedData)
+                        }
+                    } catch {
+                        print("Failed to get weather data for \(cityName): \(error)")
+                    }
+                }
+
+                DispatchQueue.main.async {
+//                    self.mainWeathersData = weatherDataArray
+//                    self.resultArray = self.mainWeathersData
+//                    self.homeCollectionView.reloadData()
+                    print(weatherDataArray)
+                    print("💛💛💛💛💛💛💛")
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+
