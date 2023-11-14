@@ -45,12 +45,13 @@ class HomeWeatherCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: Weather) {
-        weatherButton.localLabel.text = data.local
-        weatherButton.weatherLabel.text = data.weather
-        weatherButton.tempLabel.text = String(data.currentTemp) + "˚"
-        weatherButton.maxTempLabel.text = "최고:" + String(data.maxTemp) + "˚"
-        weatherButton.minTempLabel.text = "최저:" + String(data.minTemp) + "˚"
-        weatherButton.indexNumber = data.indexNumber
+    func bindData(data: WeatherResponseDTO) {
+        weatherButton.myPlaceLabel.text = data.name
+        weatherButton.localLabel.text = convertTime(timezone: data.timezone)
+        weatherButton.weatherLabel.text = data.weather[0].description
+        weatherButton.tempLabel.text = String(data.main.temp) + "˚"
+        weatherButton.maxTempLabel.text = "최고:" + String(data.main.tempMax) + "˚"
+        weatherButton.minTempLabel.text = "최저:" + String(data.main.tempMin) + "˚"
+//        weatherButton.indexNumber = data.indexNumber
     }
 }
