@@ -49,9 +49,9 @@ class HomeWeatherCollectionViewCell: UICollectionViewCell {
         weatherButton.myPlaceLabel.text = data.name
         weatherButton.localLabel.text = convertTime(timezone: data.timezone)
         weatherButton.weatherLabel.text = data.weather[0].description
-        weatherButton.tempLabel.text = String(data.main.temp) + "˚"
-        weatherButton.maxTempLabel.text = "최고:" + String(data.main.tempMax) + "˚"
-        weatherButton.minTempLabel.text = "최저:" + String(data.main.tempMin) + "˚"
+        weatherButton.tempLabel.text = String(Int(data.main.temp)) + "˚"
+        weatherButton.maxTempLabel.text = "최고:" + String(Int(data.main.tempMax)) + "˚"
+        weatherButton.minTempLabel.text = "최저:" + String(Int(data.main.tempMin)) + "˚"
 //        weatherButton.indexNumber = data.indexNumber
     }
 }
