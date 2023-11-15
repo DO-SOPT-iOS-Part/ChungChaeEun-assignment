@@ -45,26 +45,31 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: Weather, row: Int) {
-        timeWeatherView.timeLabel.text = data.timeZoneWeather[row].time
-        timeWeatherView.tempLabel.text = String(data.timeZoneWeather[row].temp) + "˚"
-        setViewState(state: data.timeZoneWeather[row].state)
+    func bindData(data: WeatherDetailResponseDTO, row: Int) {
+        timeWeatherView.timeLabel.text = setTime(row: row)
+        timeWeatherView.tempLabel.text = String(Int(data.list[row].main.temp)) + "˚"
+        setViewState(state: data.list[row].weather[0].main)
     }
     
-    func setViewState(state: WeatherState) {
+    func setTime(row: Int) -> String {
+        let time = convert3HTime(timezone: row)
+        if row == 0 {
+            return "Now"
+        } else {
+            return time[row]
+        }
+    }
+    
+    func setViewState(state: MainEnum) {
         switch state {
-        case .cloudyNight:
+        case .clear:
             timeWeatherView.weatherImageView.image = UIImage(named: "icCloudyNight")
-        case .heavyRain:
+        case .clouds:
             timeWeatherView.weatherImageView.image = UIImage(named: "icHeavyRain")
         case .rain:
             timeWeatherView.weatherImageView.image = UIImage(named: "icRain")
-        case .rainyDay:
+        case .snow:
             timeWeatherView.weatherImageView.image = UIImage(named: "icRainyDay")
-        case .thunder:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icThunder")
-        default:
-            return
         }
     }
 }

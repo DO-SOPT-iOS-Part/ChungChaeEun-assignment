@@ -18,6 +18,7 @@ final class DetailViewController: UIViewController {
     var minMinTemp: Int = 0
     var maxMaxTemp: Int = 0
     
+    var hourDetailWeathersData: [WeatherDetailResponseDTO] = []
     var detailWeatherData: WeatherResponseDTO = WeatherResponseDTO(coord: Coord(lon: 0, lat: 0), weather: [Weathers(id: 0, main: "", description: "", icon: "")], base: "", main: Main(temp: 0.0, feelsLike: 0.0, tempMin: 0.0, tempMax: 0.0, pressure: 0, humidity: 0, seaLevel: 0, grndLevel: 0), visibility: 0, wind: Wind(speed: 0.0, deg: 0, gust: 0.0), clouds: Clouds(all: 0), dt: 0, sys: Sys(type: 0, id: 0, country: "", sunrise: 0, sunset: 0), timezone: 0, id: 0, name: "", cod: 0)
     
     let backgroundImageView = UIImageView()
@@ -118,7 +119,7 @@ extension DetailViewController: UICollectionViewDataSource {
         if collectionView == detailCollectionView {
             return 1
         } else {
-            return weatherDummy.count
+            return hourDetailWeathersData.count
         }
     }
     
@@ -148,6 +149,7 @@ extension DetailViewController: UICollectionViewDataSource {
                 cell.weatherTimeCollectionView.isScrollEnabled = true
                 cell.weatherTimeCollectionView.delegate = self
                 cell.weatherTimeCollectionView.dataSource = self
+                cell.weatherTimeCollectionView.reloadData()
                 return cell
             case 1:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TenDaysCardView.identifier, for: indexPath) as? TenDaysCardView else { return UICollectionViewCell() }
@@ -161,7 +163,7 @@ extension DetailViewController: UICollectionViewDataSource {
             }
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
-            cell.bindData(data: weatherDummy[self.indexNumber], row: indexPath.row)
+            cell.bindData(data: hourDetailWeathersData[0], row: indexPath.row)
             return cell
         }
     }
@@ -224,14 +226,14 @@ extension DetailViewController {
         Task {
             do {
                 let cities = ["seoul", "daegu", "busan", "daejeon", "mokpo"]
-                
-//                self.mainWeathersData = []
-                var weatherDataArray: [WeatherDetailResponseDTO] = []
+                                
+                self.hourDetailWeathersData = []
+                var hourDetailWeatherDataArray: [WeatherDetailResponseDTO] = []
                 
                 for cityName in cities {
                     do {
                         if let receivedData = try await WeatherDetailService.shared.GetDetailWeatherData(cityName: cityName) {
-                            weatherDataArray.append(receivedData)
+                            hourDetailWeatherDataArray.append(receivedData)
                         }
                     } catch {
                         print("Failed to get weather data for \(cityName): \(error)")
@@ -239,10 +241,9 @@ extension DetailViewController {
                 }
 
                 DispatchQueue.main.async {
-//                    self.mainWeathersData = weatherDataArray
-//                    self.resultArray = self.mainWeathersData
-//                    self.homeCollectionView.reloadData()
-                    print(weatherDataArray)
+                    self.hourDetailWeathersData = hourDetailWeatherDataArray
+                    self.detailCollectionView.reloadData()
+                    print(hourDetailWeatherDataArray)
                     print("💛💛💛💛💛💛💛")
                 }
             } catch {
