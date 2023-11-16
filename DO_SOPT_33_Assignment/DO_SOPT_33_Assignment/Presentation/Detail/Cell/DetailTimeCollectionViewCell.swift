@@ -23,6 +23,13 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        timeWeatherView.timeLabel.text = nil
+        timeWeatherView.weatherImageView.image = nil
+        timeWeatherView.tempLabel.text = nil
+    }
+    
     private func setUI() {
         setStyle()
         setLayout()
