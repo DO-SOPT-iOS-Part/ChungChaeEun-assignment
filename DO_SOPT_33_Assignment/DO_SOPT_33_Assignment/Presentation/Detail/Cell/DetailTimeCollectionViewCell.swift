@@ -48,7 +48,7 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
     func bindData(data: WeatherDetailResponseDTO, row: Int) {
         timeWeatherView.timeLabel.text = setTime(row: row)
         timeWeatherView.tempLabel.text = String(Int(data.list[row].main.temp)) + "˚"
-        setViewState(state: data.list[row].weather[0].main)
+        setViewState(state: data.list[row].weather[0].main, row: row)
     }
     
     func setTime(row: Int) -> String {
@@ -60,16 +60,20 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setViewState(state: MainEnum) {
+    func setViewState(state: MainEnum, row: Int) {
         switch state {
         case .clear:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icCloudyNight")
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "sun.min.fill")
         case .clouds:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icHeavyRain")
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.fill")
         case .rain:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icRain")
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.rain.fill")
         case .snow:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icRainyDay")
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.snow.fill")
+        case .drizzle:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.drizzle.fill")
+        case .thunderstorm:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.bolt.fill")
         }
     }
 }

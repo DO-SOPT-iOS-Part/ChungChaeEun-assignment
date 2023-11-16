@@ -70,6 +70,7 @@ final class DetailViewController: UIViewController {
             $0.backgroundColor = .clear
             $0.showsVerticalScrollIndicator = false
             $0.isUserInteractionEnabled = true
+            $0.delaysContentTouches = false
         }
         
         detailFlowLayout.do {
@@ -150,6 +151,7 @@ extension DetailViewController: UICollectionViewDataSource {
                 cell.weatherTimeCollectionView.delegate = self
                 cell.weatherTimeCollectionView.dataSource = self
                 cell.weatherTimeCollectionView.reloadData()
+                cell.weatherTimeCollectionView.isUserInteractionEnabled = true
                 return cell
             case 1:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TenDaysCardView.identifier, for: indexPath) as? TenDaysCardView else { return UICollectionViewCell() }
@@ -163,7 +165,7 @@ extension DetailViewController: UICollectionViewDataSource {
             }
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
-            cell.bindData(data: hourDetailWeathersData[0], row: indexPath.row)
+            cell.bindData(data: hourDetailWeathersData[indexNumber], row: indexPath.row)
             return cell
         }
     }
