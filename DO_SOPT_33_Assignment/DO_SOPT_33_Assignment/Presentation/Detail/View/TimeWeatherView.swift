@@ -38,6 +38,11 @@ class TimeWeatherView: UIView {
             $0.font = UIFont(name: "SFProDisplay-Regular", size: 17)
         }
         
+        weatherImageView.do {
+            $0.tintColor = .white
+            $0.contentMode = .scaleAspectFit
+        }
+        
         tempLabel.do {
             $0.textColor = .white
             $0.font = UIFont(name: "SFProDisplay-Medium", size: 22)
@@ -61,13 +66,13 @@ class TimeWeatherView: UIView {
         }
         
         weatherImageView.snp.makeConstraints {
-            $0.top.equalTo(timeLabel.snp.bottom).offset(14)
-            $0.width.height.equalTo(44)
+            $0.width.height.equalTo(30)
             $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-2)
         }
         
         tempLabel.snp.makeConstraints {
-            $0.top.equalTo(weatherImageView.snp.bottom).offset(14)
+            $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
     }

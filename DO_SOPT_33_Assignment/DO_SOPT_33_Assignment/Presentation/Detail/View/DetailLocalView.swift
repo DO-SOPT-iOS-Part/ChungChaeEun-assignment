@@ -87,10 +87,10 @@ class DetailLocalView: UICollectionReusableView {
         }
     }
     
-    func configLocalView(indexNumber: Int) {
-        localLabel.text = weatherDummy[indexNumber].local
-        tempLabel.text = String(weatherDummy[indexNumber].currentTemp) + "˚"
-        weatherLabel.text = weatherDummy[indexNumber].weather
-        maxMinTempLabel.text = "최고:" + String(weatherDummy[indexNumber].maxTemp) + "°  최저:" + String(weatherDummy[indexNumber].minTemp) + "°"
+    func configLocalView(data: WeatherResponseDTO) {
+        localLabel.text = data.name
+        tempLabel.text = String(Int(data.main.temp)) + "˚"
+        weatherLabel.text = data.weather[0].main
+        maxMinTempLabel.text = "최고:" + String(Int(data.main.tempMax)) + "°  최저:" + String(Int(data.main.tempMin)) + "°"
     }
 }

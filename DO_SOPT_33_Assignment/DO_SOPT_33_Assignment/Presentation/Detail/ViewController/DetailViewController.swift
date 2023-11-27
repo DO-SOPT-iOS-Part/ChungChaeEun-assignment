@@ -17,6 +17,11 @@ final class DetailViewController: UIViewController {
     var maxTempArray: [Int] = []
     var minMinTemp: Int = 0
     var maxMaxTemp: Int = 0
+    var hourWeatherCount: Int = 0
+    
+    var hourDetailWeathersData: [WeatherDetailResponseDTO] = [WeatherDetailResponseDTO(cod: "", message: 0, cnt: 0, list: [List(dt: 0, main: MainClass(temp: 0, feelsLike: 0, tempMin: 0, tempMax: 0, pressure: 0, seaLevel: 0, grndLevel: 0, humidity: 0, tempKf: 0), weather: [DetailWeather(id: 0, main: .clear, description: "", icon: "")], clouds: Clouds(all: 0), wind: Wind(speed: 0, deg: 0, gust: 0), visibility: 0, pop: 0, sys: DetailSys(pod: .d), dtTxt: "", rain: Rain(the3h: 0), snow: Rain(the3h: 0))], city: City(id: 0, name: "", coord: Coord(lon: 0, lat: 0), country: "", population: 0, timezone: 0, sunrise: 0, sunset: 0))]
+    
+    var detailWeatherData: WeatherResponseDTO = WeatherResponseDTO(coord: Coord(lon: 0, lat: 0), weather: [Weathers(id: 0, main: "", description: "", icon: "")], base: "", main: Main(temp: 0.0, feelsLike: 0.0, tempMin: 0.0, tempMax: 0.0, pressure: 0, humidity: 0, seaLevel: 0, grndLevel: 0), visibility: 0, wind: Wind(speed: 0.0, deg: 0, gust: 0.0), clouds: Clouds(all: 0), dt: 0, sys: Sys(type: 0, id: 0, country: "", sunrise: 0, sunset: 0), timezone: 0, id: 0, name: "", cod: 0)
     
     let backgroundImageView = UIImageView()
     
@@ -26,7 +31,13 @@ final class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadWeatherDetailData()
         setUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadWeatherDetailData()
     }
     
     private func setUI() {
@@ -62,6 +73,7 @@ final class DetailViewController: UIViewController {
             $0.backgroundColor = .clear
             $0.showsVerticalScrollIndicator = false
             $0.isUserInteractionEnabled = true
+            $0.delaysContentTouches = false
         }
         
         detailFlowLayout.do {
@@ -111,7 +123,7 @@ extension DetailViewController: UICollectionViewDataSource {
         if collectionView == detailCollectionView {
             return 1
         } else {
-            return weatherDummy.count
+            return hourWeatherCount
         }
     }
     
@@ -141,6 +153,8 @@ extension DetailViewController: UICollectionViewDataSource {
                 cell.weatherTimeCollectionView.isScrollEnabled = true
                 cell.weatherTimeCollectionView.delegate = self
                 cell.weatherTimeCollectionView.dataSource = self
+                cell.weatherTimeCollectionView.reloadData()
+                cell.weatherTimeCollectionView.isUserInteractionEnabled = true
                 return cell
             case 1:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TenDaysCardView.identifier, for: indexPath) as? TenDaysCardView else { return UICollectionViewCell() }
@@ -154,7 +168,7 @@ extension DetailViewController: UICollectionViewDataSource {
             }
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
-            cell.bindData(data: weatherDummy[self.indexNumber], row: indexPath.row)
+            cell.bindData(data: hourDetailWeathersData[indexNumber], row: indexPath.row)
             return cell
         }
     }
@@ -168,7 +182,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             if kind == UICollectionView.elementKindSectionHeader {
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailLocalView.identifier, for: indexPath) as! DetailLocalView
-                headerView.configLocalView(indexNumber: indexNumber)
+                headerView.configLocalView(data: detailWeatherData)
                 return headerView
             } else {
                 return UICollectionReusableView()
@@ -190,14 +204,6 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
             return CGSize.zero
         }
     }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        if collectionView == detailCollectionView {
-//            return 20
-//        } else {
-//            return 22
-//        }
-//    }
 }
 
 extension DetailViewController: UITableViewDelegate { }
@@ -219,3 +225,37 @@ extension DetailViewController: UITableViewDataSource {
         return 55
     }
 }
+
+extension DetailViewController {
+    private func loadWeatherDetailData() {
+        Task {
+            do {
+                let cities = ["seoul", "daegu", "busan", "daejeon", "mokpo"]
+                                
+                self.hourDetailWeathersData = []
+                var hourDetailWeatherDataArray: [WeatherDetailResponseDTO] = []
+                
+                for cityName in cities {
+                    do {
+                        if let receivedData = try await WeatherDetailService.shared.GetDetailWeatherData(cityName: cityName) {
+                            hourDetailWeatherDataArray.append(receivedData)
+                        }
+                    } catch {
+                        print("Failed to get weather data for \(cityName): \(error)")
+                    }
+                }
+
+                DispatchQueue.main.async {
+                    self.hourDetailWeathersData = hourDetailWeatherDataArray
+                    self.hourWeatherCount = 9
+                    self.detailCollectionView.reloadData()
+                    print(hourDetailWeatherDataArray)
+                    print("💛💛💛💛💛💛💛")
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+

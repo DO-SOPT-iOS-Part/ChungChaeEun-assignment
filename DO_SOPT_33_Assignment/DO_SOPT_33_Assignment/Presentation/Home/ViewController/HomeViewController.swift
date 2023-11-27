@@ -12,7 +12,8 @@ import Then
 
 final class HomeViewController: UIViewController {
     
-    var resultArray: [Weather] = weatherDummy
+    var resultArray: [WeatherResponseDTO] = []
+    var mainWeathersData: [WeatherResponseDTO] = []
     
     let moreButton = UIButton()
     let weatherTitleLabel = UILabel()
@@ -25,6 +26,11 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadWeatherData()
     }
     
     private func setUI() {
@@ -118,9 +124,10 @@ extension HomeViewController: WeatherButtonDelegate {
     func weatherButtonTapped(sender: WeatherListButton) {
         let detailPageViewController = DetailPageViewController()
         
-        for index in 0..<weatherDummy.count {
+        for index in 0..<resultArray.count {
             let detailViewController = DetailViewController()
             detailViewController.indexNumber = index
+            detailViewController.detailWeatherData = resultArray[index]
             detailPageViewController.detailViewControllers.append(detailViewController)
         }
         
@@ -139,8 +146,9 @@ extension HomeViewController: UISearchBarDelegate {
         
         self.resultArray = []
         
-        weatherDummy.forEach {
-            if $0.local.contains(text) {
+        mainWeathersData.forEach {
+            // 대소문자 구별은 안됨..
+            if $0.name.contains(text) {
                 resultArray.append($0)
             }
         }
@@ -148,7 +156,7 @@ extension HomeViewController: UISearchBarDelegate {
         print(resultArray)
         
         if text.isEmpty {
-            self.resultArray = weatherDummy
+            self.resultArray = mainWeathersData
         }
         
         self.homeCollectionView.reloadData()
@@ -167,12 +175,44 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeWeatherCollectionViewCell.identifier, for: indexPath) as? HomeWeatherCollectionViewCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeWeatherCollectionViewCell.identifier, for: indexPath) as? HomeWeatherCollectionViewCell else { return UICollectionViewCell() }
         cell.weatherButton.weatherButtonDelegate = self
         cell.bindData(data: resultArray[indexPath.row])
+        cell.weatherButton.indexNumber = indexPath.row
         return cell
     }
 }
 
 extension HomeViewController: UICollectionViewDelegate { }
 
+extension HomeViewController {
+    private func loadWeatherData() {
+        Task {
+            do {
+                let cities = ["seoul", "daegu", "busan", "daejeon", "mokpo"]
+                
+                self.mainWeathersData = []
+                var weatherDataArray: [WeatherResponseDTO] = []
+                
+                for cityName in cities {
+                    do {
+                        if let receivedData = try await WeatherService.shared.GetWeatherData(cityName: cityName) {
+                            weatherDataArray.append(receivedData)
+                        }
+                    } catch {
+                        print("Failed to get weather data for \(cityName): \(error)")
+                    }
+                }
+
+                DispatchQueue.main.async {
+                    self.mainWeathersData = weatherDataArray
+                    self.resultArray = self.mainWeathersData
+                    self.homeCollectionView.reloadData()
+                    print("💛💛💛💛💛💛💛")
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+}

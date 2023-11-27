@@ -66,6 +66,8 @@ class TimeCardView: UICollectionViewCell {
         weatherTimeCollectionView.do {
             $0.backgroundColor = .clear
             $0.isUserInteractionEnabled = true
+            $0.isScrollEnabled = true
+            $0.showsHorizontalScrollIndicator = false
         }
         
         weatherTimeFlowLayout.do {

@@ -23,6 +23,13 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        timeWeatherView.timeLabel.text = nil
+        timeWeatherView.weatherImageView.image = nil
+        timeWeatherView.tempLabel.text = nil
+    }
+    
     private func setUI() {
         setStyle()
         setLayout()
@@ -45,26 +52,35 @@ class DetailTimeCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: Weather, row: Int) {
-        timeWeatherView.timeLabel.text = data.timeZoneWeather[row].time
-        timeWeatherView.tempLabel.text = String(data.timeZoneWeather[row].temp) + "˚"
-        setViewState(state: data.timeZoneWeather[row].state)
+    func bindData(data: WeatherDetailResponseDTO, row: Int) {
+        timeWeatherView.timeLabel.text = setTime(row: row)
+        timeWeatherView.tempLabel.text = String(Int(data.list[row].main.temp)) + "˚"
+        setViewState(state: data.list[row].weather[0].main, row: row)
     }
     
-    func setViewState(state: WeatherState) {
+    func setTime(row: Int) -> String {
+        let time = convert3HTime(timezone: row)
+        if row == 0 {
+            return "Now"
+        } else {
+            return time[row]
+        }
+    }
+    
+    func setViewState(state: MainEnum, row: Int) {
         switch state {
-        case .cloudyNight:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icCloudyNight")
-        case .heavyRain:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icHeavyRain")
+        case .clear:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "sun.min.fill")
+        case .clouds:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.fill")
         case .rain:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icRain")
-        case .rainyDay:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icRainyDay")
-        case .thunder:
-            timeWeatherView.weatherImageView.image = UIImage(named: "icThunder")
-        default:
-            return
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.rain.fill")
+        case .snow:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.snow.fill")
+        case .drizzle:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.drizzle.fill")
+        case .thunderstorm:
+            timeWeatherView.weatherImageView.image = UIImage(systemName: "cloud.bolt.fill")
         }
     }
 }
