@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 protocol WeatherButtonDelegate: AnyObject {
-    func weatherButtonTapped(sender: WeatherListButton)
+    func weatherButtonTapped(sender: WeatherListButton) -> UIViewController
 }
 
 class WeatherListButton: UIButton {
