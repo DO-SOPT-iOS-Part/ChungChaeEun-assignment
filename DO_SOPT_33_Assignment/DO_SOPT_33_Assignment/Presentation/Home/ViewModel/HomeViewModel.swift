@@ -11,9 +11,14 @@ protocol HomeViewModelDelegate: AnyObject {
     func updateData()
 }
 
+protocol WeatherButtonDelegate: AnyObject {
+    func weatherButtonTapped(sender: WeatherListButton)
+}
+
 final class HomeViewModel: NSObject {
     
     weak var homeSearchBarDelegate: HomeViewModelDelegate?
+    weak var weatherButtonDelegate: WeatherButtonDelegate?
 
     var resultArray: [WeatherResponseDTO] = []
     var mainWeathersData: [WeatherResponseDTO] = []
@@ -34,7 +39,6 @@ final class HomeViewModel: NSObject {
                     print("Failed to get weather data for \(cityName): \(error)")
                 }
             }
-            
             self.mainWeathersData = weatherDataArray
             self.resultArray = self.mainWeathersData
             return true
@@ -73,29 +77,15 @@ extension HomeViewModel: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeWeatherCollectionViewCell.identifier, for: indexPath) as? HomeWeatherCollectionViewCell else { return UICollectionViewCell() }
-        cell.weatherButton.weatherButtonDelegate = self
+        cell.weatherButton.addTarget(self, action: #selector(weatherButtonTapped), for: .touchUpInside)
         cell.bindData(data: resultArray[indexPath.row])
         cell.weatherButton.indexNumber = indexPath.row
         return cell
     }
 }
 
-extension HomeViewModel: WeatherButtonDelegate {
-    func weatherButtonTapped(sender: WeatherListButton) -> UIViewController {
-        let detailPageViewController = DetailPageViewController()
-        
-        for index in 0..<resultArray.count {
-            let detailViewController = DetailViewController()
-            detailViewController.indexNumber = index
-            detailViewController.detailWeatherData = resultArray[index]
-            detailPageViewController.detailViewControllers.append(detailViewController)
-        }
-        
-        let firstViewController = detailPageViewController.detailViewControllers[sender.indexNumber]
-        detailPageViewController.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
-        
-        detailPageViewController.detailViewControllers[sender.indexNumber].indexNumber = sender.indexNumber
-        
-        return detailPageViewController
+extension HomeViewModel {
+    @objc func weatherButtonTapped(sender: WeatherListButton) {
+        weatherButtonDelegate?.weatherButtonTapped(sender: sender)
     }
 }
