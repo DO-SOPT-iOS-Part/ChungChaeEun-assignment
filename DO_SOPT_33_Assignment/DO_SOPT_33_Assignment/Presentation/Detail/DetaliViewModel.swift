@@ -39,6 +39,7 @@ final class DetailViewModel: NSObject {
                 DispatchQueue.main.async {
                     self.hourWeatherCount = 9
                     print("💛💛💛💛💛💛💛")
+                    completion()
                 }
             }
         }

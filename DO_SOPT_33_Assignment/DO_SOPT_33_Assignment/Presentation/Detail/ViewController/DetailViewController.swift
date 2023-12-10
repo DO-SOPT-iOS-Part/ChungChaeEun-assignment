@@ -29,6 +29,10 @@ final class DetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        updateHourlyWeather()
+    }
+    
+    private func updateHourlyWeather() {
         detailViewModel.loadWeatherDetailData {
             self.detailCollectionView.reloadData()
         }
@@ -39,6 +43,9 @@ final class DetailViewController: UIViewController {
         setLayout()
         setDelegate()
         configCollectionView()
+        detailViewModel.loadWeatherDetailData {
+            self.detailCollectionView.reloadData()
+        }
     }
     
     private func setDelegate() {
