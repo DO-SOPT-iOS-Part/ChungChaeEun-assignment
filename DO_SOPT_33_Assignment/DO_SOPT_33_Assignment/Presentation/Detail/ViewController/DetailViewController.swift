@@ -11,16 +11,7 @@ import SnapKit
 import Then
 
 final class DetailViewController: UIViewController {
-    
-    var indexNumber: Int = 0
-    var minTempArray: [Int] = []
-    var maxTempArray: [Int] = []
-    var minMinTemp: Int = 0
-    var maxMaxTemp: Int = 0
-    var hourWeatherCount: Int = 0
-    
-    var hourDetailWeathersData: [WeatherDetailResponseDTO] = [WeatherDetailResponseDTO(cod: "", message: 0, cnt: 0, list: [List(dt: 0, main: MainClass(temp: 0, feelsLike: 0, tempMin: 0, tempMax: 0, pressure: 0, seaLevel: 0, grndLevel: 0, humidity: 0, tempKf: 0), weather: [DetailWeather(id: 0, main: .clear, description: "", icon: "")], clouds: Clouds(all: 0), wind: Wind(speed: 0, deg: 0, gust: 0), visibility: 0, pop: 0, sys: DetailSys(pod: .d), dtTxt: "", rain: Rain(the3h: 0), snow: Rain(the3h: 0))], city: City(id: 0, name: "", coord: Coord(lon: 0, lat: 0), country: "", population: 0, timezone: 0, sunrise: 0, sunset: 0))]
-    
+        
     var detailWeatherData: WeatherResponseDTO = WeatherResponseDTO(coord: Coord(lon: 0, lat: 0), weather: [Weathers(id: 0, main: "", description: "", icon: "")], base: "", main: Main(temp: 0.0, feelsLike: 0.0, tempMin: 0.0, tempMax: 0.0, pressure: 0, humidity: 0, seaLevel: 0, grndLevel: 0), visibility: 0, wind: Wind(speed: 0.0, deg: 0, gust: 0.0), clouds: Clouds(all: 0), dt: 0, sys: Sys(type: 0, id: 0, country: "", sunrise: 0, sunset: 0), timezone: 0, id: 0, name: "", cod: 0)
     
     let backgroundImageView = UIImageView()
@@ -29,15 +20,18 @@ final class DetailViewController: UIViewController {
                                                      collectionViewLayout: detailFlowLayout)
     let detailFlowLayout = UICollectionViewFlowLayout()
     
+    let detailViewModel = DetailViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadWeatherDetailData()
         setUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        loadWeatherDetailData()
+        detailViewModel.loadWeatherDetailData {
+            self.detailCollectionView.reloadData()
+        }
     }
     
     private func setUI() {
@@ -96,84 +90,9 @@ final class DetailViewController: UIViewController {
             $0.bottom.equalToSuperview().inset(82)
         }
     }
-    
-    func caculateMinMax(data: [TenDaysWeather]) {
-        data.forEach {
-            minTempArray.append($0.minTemp)
-            maxTempArray.append($0.maxTemp)
-        }
-        
-        minMinTemp = minTempArray.min() ?? 0
-        maxMaxTemp = maxTempArray.max() ?? 0
-    }
 }
 
 extension DetailViewController: UICollectionViewDelegate { }
-extension DetailViewController: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if collectionView == detailCollectionView {
-            return 2
-        } else {
-            return 1
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == detailCollectionView {
-            return 1
-        } else {
-            return hourWeatherCount
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == detailCollectionView {
-            switch indexPath.section {
-            case 0:
-                CGSize(width: UIScreen.main.bounds.width - 40, height: 212)
-
-            case 1:
-                CGSize(width: UIScreen.main.bounds.width - 40, height: 588)
-
-            default:
-                CGSize.zero
-            }
-        } else {
-            CGSize(width: 44, height: 122)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == detailCollectionView {
-            switch indexPath.section {
-            case 0:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeCardView.identifier, for: indexPath) as? TimeCardView else { return UICollectionViewCell() }
-                cell.configTimeCardView(indexNumber: indexNumber)
-                cell.weatherTimeCollectionView.isScrollEnabled = true
-                cell.weatherTimeCollectionView.delegate = self
-                cell.weatherTimeCollectionView.dataSource = self
-                cell.weatherTimeCollectionView.reloadData()
-                cell.weatherTimeCollectionView.isUserInteractionEnabled = true
-                return cell
-            case 1:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TenDaysCardView.identifier, for: indexPath) as? TenDaysCardView else { return UICollectionViewCell() }
-                self.caculateMinMax(data: tenDaysWeatherDummy)
-                
-                cell.tenDaysTableView.delegate = self
-                cell.tenDaysTableView.dataSource = self
-                return cell
-            default:
-                return UICollectionViewCell()
-            }
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
-            cell.bindData(data: hourDetailWeathersData[indexNumber], row: indexPath.row)
-            return cell
-        }
-    }
-}
-
 
 extension DetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -207,6 +126,72 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension DetailViewController: UITableViewDelegate { }
+
+extension DetailViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if collectionView == detailCollectionView {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == detailCollectionView {
+            return 1
+        } else {
+            return detailViewModel.hourWeatherCount
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == detailCollectionView {
+            switch indexPath.section {
+            case 0:
+                CGSize(width: UIScreen.main.bounds.width - 40, height: 212)
+
+            case 1:
+                CGSize(width: UIScreen.main.bounds.width - 40, height: 588)
+
+            default:
+                CGSize.zero
+            }
+        } else {
+            CGSize(width: 44, height: 122)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == detailCollectionView {
+            switch indexPath.section {
+            case 0:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeCardView.identifier, for: indexPath) as? TimeCardView else { return UICollectionViewCell() }
+                cell.configTimeCardView(indexNumber: detailViewModel.indexNumber)
+                cell.weatherTimeCollectionView.isScrollEnabled = true
+                cell.weatherTimeCollectionView.delegate = self
+                cell.weatherTimeCollectionView.dataSource = self
+                cell.weatherTimeCollectionView.reloadData()
+                cell.weatherTimeCollectionView.isUserInteractionEnabled = true
+                return cell
+            case 1:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TenDaysCardView.identifier, for: indexPath) as? TenDaysCardView else { return UICollectionViewCell() }
+                self.detailViewModel.caculateMinMax(data: tenDaysWeatherDummy)
+                cell.tenDaysTableView.delegate = self
+                cell.tenDaysTableView.dataSource = self
+                return cell
+            default:
+                return UICollectionViewCell()
+            }
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
+            cell.bindData(data: detailViewModel.hourDetailWeathersData[detailViewModel.indexNumber], row: indexPath.row)
+            return cell
+        }
+    }
+}
+
+
 extension DetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
@@ -216,8 +201,8 @@ extension DetailViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TenDaysTableViewCell.identifier, for: indexPath) as? TenDaysTableViewCell else { return UITableViewCell() }
         cell.bindData(data: tenDaysWeatherDummy[indexPath.row])
         cell.selectionStyle = .none
-        cell.minMinTemp = minMinTemp
-        cell.maxMaxTemp = maxMaxTemp
+        cell.minMinTemp = detailViewModel.minMinTemp
+        cell.maxMaxTemp = detailViewModel.maxMaxTemp
         return cell
     }
     
@@ -225,37 +210,3 @@ extension DetailViewController: UITableViewDataSource {
         return 55
     }
 }
-
-extension DetailViewController {
-    private func loadWeatherDetailData() {
-        Task {
-            do {
-                let cities = ["seoul", "daegu", "busan", "daejeon", "mokpo"]
-                                
-                self.hourDetailWeathersData = []
-                var hourDetailWeatherDataArray: [WeatherDetailResponseDTO] = []
-                
-                for cityName in cities {
-                    do {
-                        if let receivedData = try await WeatherDetailService.shared.GetDetailWeatherData(cityName: cityName) {
-                            hourDetailWeatherDataArray.append(receivedData)
-                        }
-                    } catch {
-                        print("Failed to get weather data for \(cityName): \(error)")
-                    }
-                }
-
-                DispatchQueue.main.async {
-                    self.hourDetailWeathersData = hourDetailWeatherDataArray
-                    self.hourWeatherCount = 9
-                    self.detailCollectionView.reloadData()
-                    print(hourDetailWeatherDataArray)
-                    print("💛💛💛💛💛💛💛")
-                }
-            } catch {
-                print(error)
-            }
-        }
-    }
-}
-

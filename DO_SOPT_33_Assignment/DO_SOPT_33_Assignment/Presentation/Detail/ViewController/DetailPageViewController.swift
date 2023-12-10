@@ -109,7 +109,6 @@ class DetailPageViewController: UIViewController {
 }
 
 extension DetailPageViewController: UIPageViewControllerDataSource {
-    // UIPageViewControllerDataSource 메서드
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         if let currentIndex = detailViewControllers.firstIndex(of: viewController as! DetailViewController), currentIndex > 0 {
             return detailViewControllers[currentIndex - 1]
