@@ -158,15 +158,15 @@ extension HomeViewController: WeatherButtonDelegate {
         
         for index in 0..<homeViewModel.resultArray.count {
             let detailViewController = DetailViewController()
-            detailViewController.detailViewModel.indexNumber = index
-            detailViewController.detailWeatherData = homeViewModel.resultArray[index]
+            detailViewController.indexNumber = index
+            detailViewController.detailViewModel.detailWeatherData = homeViewModel.resultArray[index]
             detailPageViewController.detailViewControllers.append(detailViewController)
         }
         
         let firstViewController = detailPageViewController.detailViewControllers[sender.indexNumber]
         detailPageViewController.pageViewController.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
-        detailPageViewController.detailViewControllers[sender.indexNumber].detailViewModel.indexNumber = sender.indexNumber
+        detailPageViewController.detailViewControllers[sender.indexNumber].indexNumber = sender.indexNumber
         
         navigationController?.pushViewController(detailPageViewController, animated: true)
     }

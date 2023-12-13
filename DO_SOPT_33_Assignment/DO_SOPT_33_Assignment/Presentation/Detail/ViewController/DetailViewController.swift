@@ -11,8 +11,7 @@ import SnapKit
 import Then
 
 final class DetailViewController: UIViewController {
-        
-    var detailWeatherData: WeatherResponseDTO = WeatherResponseDTO(coord: Coord(lon: 0, lat: 0), weather: [Weathers(id: 0, main: "", description: "", icon: "")], base: "", main: Main(temp: 0.0, feelsLike: 0.0, tempMin: 0.0, tempMax: 0.0, pressure: 0, humidity: 0, seaLevel: 0, grndLevel: 0), visibility: 0, wind: Wind(speed: 0.0, deg: 0, gust: 0.0), clouds: Clouds(all: 0), dt: 0, sys: Sys(type: 0, id: 0, country: "", sunrise: 0, sunset: 0), timezone: 0, id: 0, name: "", cod: 0)
+    var indexNumber: Int = 0
     
     let backgroundImageView = UIImageView()
     
@@ -39,12 +38,11 @@ final class DetailViewController: UIViewController {
     }
     
     private func setUI() {
-        setStyle()
-        setLayout()
-        setDelegate()
-        configCollectionView()
         detailViewModel.loadWeatherDetailData {
-            self.detailCollectionView.reloadData()
+            self.setStyle()
+            self.setLayout()
+            self.setDelegate()
+            self.configCollectionView()
         }
     }
     
@@ -108,7 +106,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             if kind == UICollectionView.elementKindSectionHeader {
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailLocalView.identifier, for: indexPath) as! DetailLocalView
-                headerView.configLocalView(data: detailWeatherData)
+                headerView.configLocalView(data: detailViewModel.detailWeatherData)
                 return headerView
             } else {
                 return UICollectionReusableView()
@@ -174,7 +172,7 @@ extension DetailViewController: UICollectionViewDataSource {
             switch indexPath.section {
             case 0:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeCardView.identifier, for: indexPath) as? TimeCardView else { return UICollectionViewCell() }
-                cell.configTimeCardView(indexNumber: detailViewModel.indexNumber)
+                cell.configTimeCardView(indexNumber: indexNumber)
                 cell.weatherTimeCollectionView.isScrollEnabled = true
                 cell.weatherTimeCollectionView.delegate = self
                 cell.weatherTimeCollectionView.dataSource = self
@@ -192,7 +190,7 @@ extension DetailViewController: UICollectionViewDataSource {
             }
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailTimeCollectionViewCell.identifier, for: indexPath) as? DetailTimeCollectionViewCell else { return UICollectionViewCell() }
-            cell.bindData(data: detailViewModel.hourDetailWeathersData[detailViewModel.indexNumber], row: indexPath.row)
+            cell.bindData(data: detailViewModel.hourDetailWeathersData[indexNumber], row: indexPath.row)
             return cell
         }
     }

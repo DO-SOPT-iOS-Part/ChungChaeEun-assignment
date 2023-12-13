@@ -9,13 +9,13 @@ import UIKit
 
 final class DetailViewModel: NSObject {
     
-    var indexNumber: Int = 0
-
     var minTempArray: [Int] = []
     var maxTempArray: [Int] = []
     var minMinTemp: Int = 0
     var maxMaxTemp: Int = 0
     var hourWeatherCount: Int = 0
+    
+    var detailWeatherData: WeatherResponseDTO = WeatherResponseDTO(coord: Coord(lon: 0, lat: 0), weather: [Weathers(id: 0, main: "", description: "", icon: "")], base: "", main: Main(temp: 0.0, feelsLike: 0.0, tempMin: 0.0, tempMax: 0.0, pressure: 0, humidity: 0, seaLevel: 0, grndLevel: 0), visibility: 0, wind: Wind(speed: 0.0, deg: 0, gust: 0.0), clouds: Clouds(all: 0), dt: 0, sys: Sys(type: 0, id: 0, country: "", sunrise: 0, sunset: 0), timezone: 0, id: 0, name: "", cod: 0)
     
     var hourDetailWeathersData: [WeatherDetailResponseDTO] = [WeatherDetailResponseDTO(cod: "", message: 0, cnt: 0, list: [List(dt: 0, main: MainClass(temp: 0, feelsLike: 0, tempMin: 0, tempMax: 0, pressure: 0, seaLevel: 0, grndLevel: 0, humidity: 0, tempKf: 0), weather: [DetailWeather(id: 0, main: .clear, description: "", icon: "")], clouds: Clouds(all: 0), wind: Wind(speed: 0, deg: 0, gust: 0), visibility: 0, pop: 0, sys: DetailSys(pod: .d), dtTxt: "", rain: Rain(the3h: 0), snow: Rain(the3h: 0))], city: City(id: 0, name: "", coord: Coord(lon: 0, lat: 0), country: "", population: 0, timezone: 0, sunrise: 0, sunset: 0))]
     
